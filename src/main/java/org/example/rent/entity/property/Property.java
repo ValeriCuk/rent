@@ -38,7 +38,7 @@ public abstract class Property {
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "property",
             cascade = CascadeType.REMOVE)
-    private List<Order> order;
+    private List<Order> orders;
 
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "property",

@@ -8,7 +8,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "property", ignore = true)
     Order toEntity(OrderDTO dto);
 
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "property", ignore = true)
     OrderDTO toDto(Order order);
+
 }

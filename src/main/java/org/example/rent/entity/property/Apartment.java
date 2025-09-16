@@ -3,10 +3,6 @@ package org.example.rent.entity.property;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.entity.Building;
-import org.example.rent.entity.Order;
-import org.example.rent.entity.Photo;
-
-import java.util.List;
 
 @Getter
 @Setter
