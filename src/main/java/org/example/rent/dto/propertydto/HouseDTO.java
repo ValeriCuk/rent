@@ -3,17 +3,17 @@ package org.example.rent.dto.propertydto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.rent.dto.OrderDTO;
-import org.example.rent.dto.PhotoDTO;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class HouseDTO extends PropertyDTO {
 
     @NotNull
-    private int rooms;
+    private int bedrooms;
     @NotNull
-    private int floor;
+    private int floors;
+    @NotNull
+    private BigDecimal outsideArea;
 }

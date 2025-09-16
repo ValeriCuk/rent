@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.rent.entity.Order;
-import org.example.rent.entity.Photo;
-
-import java.util.List;
 
 @Getter
 @Setter

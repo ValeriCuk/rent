@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 public class House extends Property {
 
     private int bedrooms;
+    private int floors;
     private BigDecimal outsideArea;
 
 }
