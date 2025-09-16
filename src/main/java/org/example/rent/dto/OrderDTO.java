@@ -3,6 +3,7 @@ package org.example.rent.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.example.rent.dto.propertydto.PropertyDTO;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

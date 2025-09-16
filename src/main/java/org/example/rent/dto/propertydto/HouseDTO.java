@@ -1,17 +1,19 @@
-package org.example.rent.dto;
+package org.example.rent.dto.propertydto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.example.rent.dto.OrderDTO;
+import org.example.rent.dto.PhotoDTO;
 
 import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommercialDTO extends PropertyDTO {
+public class HouseDTO extends PropertyDTO {
+
+    @NotNull
     private int rooms;
     @NotNull
     private int floor;
-    private List<PhotoDTO> photos;
-    private List<OrderDTO> order;
 }

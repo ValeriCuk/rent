@@ -1,11 +1,15 @@
-package org.example.rent.dto;
+package org.example.rent.dto.propertydto;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.example.rent.dto.AddressDTO;
+import org.example.rent.dto.OrderDTO;
+import org.example.rent.dto.PhotoDTO;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -17,12 +21,13 @@ public abstract class PropertyDTO {
     @NotNull
     private BigDecimal area;
     @NotNull
-    private String address;
+    private AddressDTO address;
     @NotNull
     private BigDecimal pricePerSquareMeter;
     @NotNull
     private BigDecimal totalPrice;
     @NotNull
     private Date date;
-
+    private List<OrderDTO> orders;
+    private List<PhotoDTO> photos;
 }

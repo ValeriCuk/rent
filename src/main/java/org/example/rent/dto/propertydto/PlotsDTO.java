@@ -1,16 +1,12 @@
-package org.example.rent.dto;
+package org.example.rent.dto.propertydto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.List;
 
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class PlotsDTO extends PropertyDTO {
 
-    private List<PhotoDTO> photos;
-    private List<OrderDTO> orders;
 
 }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.example.rent.entity.property.Apartment</OriginalElement>
+  <nodes>
+    <node x="-649.7919132530121" y="929.5869161981259">org.example.rent.entity.property.House</node>
+    <node x="-855.0398939759036" y="929.5869161981258">org.example.rent.entity.property.Commercial</node>
+    <node x="-912.5587684069611" y="686.2813119143239">org.example.rent.entity.Order</node>
+    <node x="-373.81325301204834" y="627.6780455153948">org.example.rent.entity.Building</node>
+    <node x="-701.5508701472556" y="675.6780455153948">org.example.rent.entity.property.Property</node>
+    <node x="-892.8227309236947" y="412.0747598393573">org.example.rent.entity.User</node>
+    <node x="-655.0508701472556" y="421.76917483266374">org.example.rent.entity.Photo</node>
+    <node x="-1042.3795973226238" y="929.5869161981258">org.example.rent.entity.property.Plots</node>
+    <node x="-416.65041713520736" y="929.5869161981259">org.example.rent.entity.property.Apartment</node>
+    <node x="-408.1273627844713" y="421.76917483266374">org.example.rent.entity.Services</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.example.rent.entity.Building" target="org.example.rent.entity.Photo" relationship="TO_MANY">
+      <point x="0.0" y="-127.5" />
+      <point x="-575.0508701472556" y="627.6780455153948" />
+      <point x="0.0" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Photo" target="org.example.rent.entity.Building" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="-575.0508701472556" y="604.2236101740293" />
+      <point x="-230.23000803212858" y="604.2236101740293" />
+      <point x="-230.23000803212858" y="643.6596326639892" />
+      <point x="-259.31325301204834" y="643.6596326639892" />
+      <point x="0.0" y="-127.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Building" target="org.example.rent.entity.property.Apartment" relationship="TO_MANY">
+      <point x="0.0" y="-127.5" />
+      <point x="-259.31325301204834" y="959.2929306559571" />
+      <point x="-373.40041713520736" y="959.2929306559571" />
+      <point x="-43.25" y="79.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Property" target="org.example.rent.entity.Photo" relationship="TO_MANY">
+      <point x="-63.25" y="-103.5" />
+      <point x="-638.3008701472556" y="739.8261226238286" />
+      <point x="-549.1122522088352" y="739.8261226238286" />
+      <point x="-549.1122522088352" y="573.5785081659973" />
+      <point x="-575.0508701472556" y="573.5785081659973" />
+      <point x="0.0" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Photo" target="org.example.rent.entity.property.Property" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="-575.0508701472556" y="548.5837751004017" />
+      <point x="-603.4009761713521" y="548.5837751004017" />
+      <point x="-603.4009761713521" y="857.8956701472557" />
+      <point x="-638.3008701472556" y="857.8956701472557" />
+      <point x="-63.25" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Services" target="org.example.rent.entity.Photo" relationship="TO_MANY">
+      <point x="0.0" y="79.5" />
+      <point x="-321.6273627844713" y="454.08430522088355" />
+      <point x="-575.0508701472556" y="454.08430522088355" />
+      <point x="0.0" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Photo" target="org.example.rent.entity.Services" relationship="TO_ONE">
+      <point x="0.0" y="-103.5" />
+      <point x="-321.6273627844713" y="421.7691748326638" />
+      <point x="0.0" y="79.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Order" target="org.example.rent.entity.User" relationship="TO_ONE">
+      <point x="0.0" y="-79.5" />
+      <point x="-832.5587684069611" y="515.5747598393573" />
+      <point x="-808.3227309236947" y="515.5747598393573" />
+      <point x="0.0" y="103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.User" target="org.example.rent.entity.Order" relationship="TO_MANY">
+      <point x="0.0" y="103.5" />
+      <point x="-808.3227309236947" y="696.8029515394913" />
+      <point x="-832.5587684069611" y="696.8029515394913" />
+      <point x="0.0" y="-79.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Apartment" target="org.example.rent.entity.Building" relationship="TO_ONE">
+      <point x="-43.25" y="79.5" />
+      <point x="-373.40041713520736" y="998.0705906291834" />
+      <point x="-304.57007068273083" y="998.0705906291834" />
+      <point x="-304.57007068273083" y="737.4573172690762" />
+      <point x="-259.31325301204834" y="737.4573172690762" />
+      <point x="0.0" y="-127.5" />
+    </edge>
+    <edge source="org.example.rent.entity.Order" target="org.example.rent.entity.property.Property" relationship="TO_ONE">
+      <point x="0.0" y="-79.5" />
+      <point x="-832.5587684069611" y="794.0" />
+      <point x="-596.9042838018743" y="794.0" />
+      <point x="-596.9042838018743" y="748.3487807228915" />
+      <point x="-638.3008701472556" y="748.3487807228915" />
+      <point x="-63.25" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Plots" target="org.example.rent.entity.property.Property" relationship="GENERALIZATION">
+      <point x="0.0" y="-43.5" />
+      <point x="-955.8795973226238" y="949.9820787148594" />
+      <point x="-978.1767518072287" y="949.9820787148594" />
+      <point x="-978.1767518072287" y="906.1324808567604" />
+      <point x="-511.80087014725564" y="906.1324808567604" />
+      <point x="63.25" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Property" target="org.example.rent.entity.Order" relationship="TO_MANY">
+      <point x="-63.25" y="-103.5" />
+      <point x="-638.3008701472556" y="759.9828519410977" />
+      <point x="-536.2732101740295" y="759.9828519410977" />
+      <point x="-536.2732101740295" y="755.1780455153948" />
+      <point x="-832.5587684069611" y="755.1780455153948" />
+      <point x="0.0" y="-79.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.House" target="org.example.rent.entity.property.Property" relationship="GENERALIZATION">
+      <point x="0.0" y="-67.5" />
+      <point x="-552.2919132530121" y="906.1324808567604" />
+      <point x="-511.80087014725564" y="906.1324808567604" />
+      <point x="63.25" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Apartment" target="org.example.rent.entity.property.Property" relationship="GENERALIZATION">
+      <point x="43.25" y="79.5" />
+      <point x="-286.90041713520736" y="1021.3371866131191" />
+      <point x="-398.3861895582328" y="1021.3371866131191" />
+      <point x="-398.3861895582328" y="906.1324808567604" />
+      <point x="-511.80087014725564" y="906.1324808567604" />
+      <point x="63.25" y="-103.5" />
+    </edge>
+    <edge source="org.example.rent.entity.property.Commercial" target="org.example.rent.entity.property.Property" relationship="GENERALIZATION">
+      <point x="0.0" y="-67.5" />
+      <point x="-768.5398939759036" y="906.1324808567604" />
+      <point x="-511.80087014725564" y="906.1324808567604" />
+      <point x="63.25" y="-103.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="1.0" showDependencies="true" x="-87.0" y="804.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

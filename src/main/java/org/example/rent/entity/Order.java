@@ -2,6 +2,7 @@ package org.example.rent.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.rent.entity.property.Property;
 
 @Entity
 @Getter
