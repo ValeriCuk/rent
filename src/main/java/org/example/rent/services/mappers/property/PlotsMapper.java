@@ -12,7 +12,7 @@ public interface PlotsMapper {
     Plots toEntity(PlotsDTO dto);
 
     default Plots toEntityWithRelations(PlotsDTO dto) {
-        return (Plots) propertyMapper().toEntityWithRelations(dto);
+        return (Plots) propertyMapper().toEntity(dto);
     }
 
     PlotsDTO toDto(Plots entity);

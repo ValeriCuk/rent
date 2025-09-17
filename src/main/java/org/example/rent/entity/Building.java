@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.example.rent.entity.property.Apartment;
+import org.example.rent.entity.property.Property;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ public class Building {
     private int insideArea;
     private int outsideArea;
     private int year;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
@@ -33,7 +34,7 @@ public class Building {
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "building",
             cascade = CascadeType.REMOVE)
-    private List<Apartment> apartments;
+    private List<Property> propertyList;
 
     @OneToMany(fetch = FetchType.LAZY,
             mappedBy = "building",

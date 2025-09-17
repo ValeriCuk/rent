@@ -3,6 +3,7 @@ package org.example.rent.entity.property;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.entity.Address;
+import org.example.rent.entity.Building;
 import org.example.rent.entity.Order;
 import org.example.rent.entity.Photo;
 
@@ -44,4 +45,8 @@ public abstract class Property {
             mappedBy = "property",
             cascade = CascadeType.REMOVE)
     private List<Photo> photos;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "building_id")
+    private Building building;
 }

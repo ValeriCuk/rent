@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.rent.dto.AddressDTO;
+import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.OrderDTO;
 import org.example.rent.dto.PhotoDTO;
 
@@ -21,13 +22,14 @@ public abstract class PropertyDTO {
     @NotNull
     private BigDecimal area;
     @NotNull
-    private AddressDTO address;
+    private AddressDTO addressDTO;
     @NotNull
     private BigDecimal pricePerSquareMeter;
     @NotNull
     private BigDecimal totalPrice;
     @NotNull
     private Date date;
-    private List<OrderDTO> orders;
-    private List<PhotoDTO> photos;
+    private BuildingDTO buildingDTO;
+    private List<OrderDTO> ordersDTO;
+    private List<PhotoDTO> photosDTO;
 }

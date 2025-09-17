@@ -12,7 +12,7 @@ public interface CommercialMapper {
     Commercial toEntity(CommercialDTO dto);
 
     default Commercial toEntityWithRelations(CommercialDTO dto) {
-        Commercial entity = (Commercial) propertyMapper().toEntityWithRelations(dto);
+        Commercial entity = (Commercial) propertyMapper().toEntity(dto);
 
         entity.setFloor(dto.getFloor());
         entity.setRooms(dto.getRooms());
@@ -23,7 +23,7 @@ public interface CommercialMapper {
     CommercialDTO toDTO(Commercial entity);
 
     default CommercialDTO toDTOWithRelations(Commercial entity) {
-        CommercialDTO dto = (CommercialDTO) propertyMapper().toDTOWithRelations(entity);
+        CommercialDTO dto = (CommercialDTO) propertyMapper().toDto(entity);
         dto.setFloor(entity.getFloor());
         dto.setRooms(entity.getRooms());
         return dto;

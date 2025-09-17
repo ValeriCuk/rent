@@ -12,7 +12,8 @@ public interface HouseMapper {
     House toEntity(HouseDTO dto);
 
     default House toEntityWithRelations(HouseDTO dto) {
-        House entity = (House) propertyMapper().toEntityWithRelations(dto);
+        House entity = (House) propertyMapper().toEntity(dto);
+
         entity.setBedrooms(dto.getBedrooms());
         entity.setFloors(dto.getFloors());
         entity.setOutsideArea(dto.getOutsideArea());
@@ -23,6 +24,7 @@ public interface HouseMapper {
 
     default HouseDTO toDtoWithRelations(House entity) {
         HouseDTO dto = (HouseDTO) propertyMapper().toDto(entity);
+
         dto.setBedrooms(entity.getBedrooms());
         dto.setFloors(entity.getFloors());
         dto.setOutsideArea(entity.getOutsideArea());

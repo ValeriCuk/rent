@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.rent.dto.propertydto.ApartmentDTO;
+import org.example.rent.dto.propertydto.PropertyDTO;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class BuildingDTO {
     private int year;
     @EqualsAndHashCode.Include
     @NotNull
-    private AddressDTO address;
-    private List<ApartmentDTO> apartments;
-    private List<PhotoDTO> photos;
+    private AddressDTO addressDTO;
+    private List<PropertyDTO> propertyListDTO;
+    private List<PhotoDTO> photosDTO;
 }

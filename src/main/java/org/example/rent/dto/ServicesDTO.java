@@ -17,5 +17,5 @@ public class ServicesDTO {
     private String description;
     @NotNull
     private Date date;
-    private List<PhotoDTO> photos;
+    private List<PhotoDTO> photosDTO;
 }

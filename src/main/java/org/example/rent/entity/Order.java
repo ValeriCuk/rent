@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.entity.property.Property;
 
+import java.sql.Date;
+
 @Entity
 @Getter
 @Setter
@@ -18,6 +20,7 @@ public class Order {
 
     private String comments;
     private boolean status;
+    private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
