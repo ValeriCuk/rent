@@ -21,7 +21,6 @@ public abstract class Property {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
     @EqualsAndHashCode.Include
     private Long id;
 

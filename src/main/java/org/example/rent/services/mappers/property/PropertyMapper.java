@@ -90,7 +90,6 @@ public interface PropertyMapper {
         }
     }
 
-
     //Entity -> DTO
     @Mapping(target = "address", ignore = true)
     @Mapping(target = "orders", ignore = true)
