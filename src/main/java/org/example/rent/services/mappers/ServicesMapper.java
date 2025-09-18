@@ -20,7 +20,7 @@ public interface ServicesMapper {
         Services entity = toEntity(dto);
         if (!dto.getPhotosDTO().isEmpty()) {
             List<Photo> photos = dto.getPhotosDTO().stream()
-                    .map(photoMapper()::toEntityWithRelations)
+                    .map(photoMapper()::toEntity)
                     .toList();
             entity.setPhotos(photos);
         }
@@ -35,7 +35,7 @@ public interface ServicesMapper {
 
         if (!entity.getPhotos().isEmpty()) {
             List<PhotoDTO> photos = entity.getPhotos().stream()
-                    .map(photoMapper()::toDtoWithRelations)
+                    .map(photoMapper()::toDto)
                     .toList();
             dto.setPhotosDTO(photos);
         }

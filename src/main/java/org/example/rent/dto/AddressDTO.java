@@ -16,6 +16,4 @@ public class AddressDTO {
     private String district;
     private String buildingNumber;
     private Integer apartmentNumber;
-    private PropertyDTO propertyDTO;
-    private BuildingDTO buildingDTO;
 }

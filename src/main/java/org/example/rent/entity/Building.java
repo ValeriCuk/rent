@@ -31,13 +31,4 @@ public class Building {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "building",
-            cascade = CascadeType.REMOVE)
-    private List<Property> propertyList;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "building",
-            cascade = CascadeType.REMOVE)
-    private List<Photo> photos;
 }

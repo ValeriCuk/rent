@@ -30,6 +30,5 @@ public abstract class PropertyDTO {
     @NotNull
     private Date date;
     private BuildingDTO buildingDTO;
-    private List<OrderDTO> ordersDTO;
     private List<PhotoDTO> photosDTO;
 }

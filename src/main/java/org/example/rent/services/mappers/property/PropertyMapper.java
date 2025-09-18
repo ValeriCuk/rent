@@ -30,7 +30,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {
         AddressMapper.class,
         PhotoMapper.class,
-        OrderMapper.class,
         ApartmentMapper.class,
         CommercialMapper.class,
         HouseMapper.class,
@@ -42,29 +41,22 @@ public interface PropertyMapper {
     //DTO -> Entity
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "addressDTO", ignore = true)
-    @Mapping(target = "ordersDTO", ignore = true)
     @Mapping(target = "photosDTO", ignore = true)
     @Mapping(target = "buildingDTO", ignore = true)
     Property toEntity(PropertyDTO dto);
 
     default Property toEntityWithRelations(PropertyDTO dto) {
         Property entity = mapToEntity(dto);
-        //List<OrderDTO> -> List<Order>
-        if (!dto.getOrdersDTO().isEmpty()) {
-            List<Order> orders = dto.getOrdersDTO().stream()
-                    .map(orderMapper()::toEntity)
-                    .toList();
-            entity.setOrders(orders);
-        }
+
         //AddressDTO -> Address
         if (dto.getAddressDTO() != null) {
-            Address address = addressMapper().toEntityWithRelations(dto.getAddressDTO());
+            Address address = addressMapper().toEntity(dto.getAddressDTO());
             entity.setAddress(address);
         }
         //List<PhotoDTO> -> List<Photo>
         if (!dto.getPhotosDTO().isEmpty()) {
             List<Photo> photos = dto.getPhotosDTO().stream()
-                    .map(photoMapper()::toEntityWithRelations)
+                    .map(photoMapper()::toEntity)
                     .toList();
             entity.setPhotos(photos);
         }
@@ -92,7 +84,6 @@ public interface PropertyMapper {
 
     //Entity -> DTO
     @Mapping(target = "address", ignore = true)
-    @Mapping(target = "orders", ignore = true)
     @Mapping(target = "photos", ignore = true)
     @Mapping(target = "building", ignore = true)
     PropertyDTO toDto(Property entity);
@@ -100,22 +91,15 @@ public interface PropertyMapper {
     default PropertyDTO toDTOWithRelations(Property entity) {
         PropertyDTO dto = mapToDTO(entity);
 
-        //List<Order> -> List<OrderDTO>
-        if (!entity.getOrders().isEmpty()) {
-            List<OrderDTO> orders = entity.getOrders().stream()
-                    .map(orderMapper()::toDto)
-                    .toList();
-            dto.setOrdersDTO(orders);
-        }
         //Address -> AddressDTO
         if (entity.getAddress() != null) {
-            AddressDTO address = addressMapper().toDtoWithRelations(entity.getAddress());
+            AddressDTO address = addressMapper().toDto(entity.getAddress());
             dto.setAddressDTO(address);
         }
         //List<Photo> -> List<PhotoDTO>
         if (!entity.getPhotos().isEmpty()) {
             List<PhotoDTO> photos = entity.getPhotos().stream()
-                    .map(photoMapper()::toDtoWithRelations)
+                    .map(photoMapper()::toDto)
                     .toList();
             dto.setPhotosDTO(photos);
         }
@@ -143,7 +127,6 @@ public interface PropertyMapper {
 
     //Getter mappers
     AddressMapper addressMapper();
-    OrderMapper orderMapper();
     PhotoMapper photoMapper();
     BuildingMapper buildingMapper();
     ApartmentMapper apartmentMapper();

@@ -36,13 +36,8 @@ public abstract class Property {
     private Date date;
 
     @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "property",
             cascade = CascadeType.REMOVE)
-    private List<Order> orders;
-
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "property",
-            cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "property_id")
     private List<Photo> photos;
 
     @ManyToOne(fetch = FetchType.LAZY)

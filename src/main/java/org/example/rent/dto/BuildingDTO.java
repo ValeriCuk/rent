@@ -25,6 +25,4 @@ public class BuildingDTO {
     @EqualsAndHashCode.Include
     @NotNull
     private AddressDTO addressDTO;
-    private List<PropertyDTO> propertyListDTO;
-    private List<PhotoDTO> photosDTO;
 }

@@ -21,7 +21,7 @@ public interface OrderMapper {
 
     default Order toEntityWithRelations(OrderDTO dto) {
         Order entity = toEntity(dto);
-        User user = userMapper().toEntityWithRelations(dto.getUser());
+        User user = userMapper().toEntity(dto.getUser());
         entity.setUser(user);
         if (dto.getProperty() != null) {
             Property property = propertyMapper().toEntityWithRelations(dto.getProperty());
@@ -36,7 +36,7 @@ public interface OrderMapper {
 
     default OrderDTO toDtoWithRelations(Order entity){
         OrderDTO dto = toDto(entity);
-        UserDTO user = userMapper().toDtoWithRelations(entity.getUser());
+        UserDTO user = userMapper().toDto(entity.getUser());
         dto.setUser(user);
         if (entity.getProperty() != null) {
             PropertyDTO property = propertyMapper().toDTOWithRelations(entity.getProperty());

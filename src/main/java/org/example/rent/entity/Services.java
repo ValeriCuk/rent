@@ -23,7 +23,7 @@ public class Services {
     private Date date;
 
     @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "services",
             cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "photo_id")
     private List<Photo> photos;
 }

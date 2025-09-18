@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.management.relation.Role;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -28,6 +27,5 @@ public class UserDTO {
     @Pattern(regexp = PHONE_PATTERN, message = "Invalid content type")
     private String phone;
     private Role role;
-    private List<OrderDTO> ordersDTO;
 
 }

@@ -23,10 +23,4 @@ public class Address {
     private String district;
     private String buildingNumber;
     private Integer apartmentNumber;
-
-    @OneToOne(mappedBy = "address")
-    private Property property;
-
-    @OneToOne(mappedBy = "address")
-    private Building building;
 }

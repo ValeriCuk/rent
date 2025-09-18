@@ -26,8 +26,4 @@ public class User {
     private String phone;
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY,
-            mappedBy = "user",
-            cascade = CascadeType.REMOVE)
-        private List<Order> orders;
 }
