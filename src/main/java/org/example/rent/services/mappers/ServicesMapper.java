@@ -30,7 +30,7 @@ public interface ServicesMapper {
     @Mapping(target = "photos", ignore = true)
     ServicesDTO toDto(Services entity);
 
-    default ServicesDTO toEntityWithRelations(Services entity) {
+    default ServicesDTO toDTOWithRelations(Services entity) {
         ServicesDTO dto = toDto(entity);
 
         if (!entity.getPhotos().isEmpty()) {

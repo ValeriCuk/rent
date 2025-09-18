@@ -61,7 +61,8 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
     //update(Long id, DTO dto)
     @Transactional
     public void update(Long id, D dto) {
-        propertyRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found through PropertyService(update) with id: " + id));
+        if (!propertyRepository.existsById(id))
+            throw new NotFoundException("Not found through PropertyService(update) with id: " + id);
         T property = (T) propertyMapper.toEntityWithRelations(dto);
         property.setId(id);
         propertyRepository.save(property);
