@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.entity.Address;
 import org.example.rent.entity.Building;
-import org.example.rent.entity.Order;
 import org.example.rent.entity.Photo;
 
 import java.math.BigDecimal;

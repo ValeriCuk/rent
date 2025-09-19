@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.rent.dto.AddressDTO;
 import org.example.rent.dto.BuildingDTO;
-import org.example.rent.dto.OrderDTO;
 import org.example.rent.dto.PhotoDTO;
 
 import java.math.BigDecimal;

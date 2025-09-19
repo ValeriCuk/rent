@@ -1,9 +1,9 @@
 package org.example.rent.services.mappers;
 
-import org.example.rent.dto.OrderDTO;
+import org.example.rent.dto.ViewingRequestDTO;
 import org.example.rent.dto.UserDTO;
 import org.example.rent.dto.propertydto.PropertyDTO;
-import org.example.rent.entity.Order;
+import org.example.rent.entity.ViewingRequest;
 import org.example.rent.services.mappers.property.PropertyMapper;
 import org.example.rent.entity.User;
 import org.example.rent.entity.property.Property;
@@ -13,14 +13,14 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring" , uses = {
         PropertyMapper.class,
         UserMapper.class})
-public interface OrderMapper {
+public interface ViewingRequestMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "property", ignore = true)
-    Order toEntity(OrderDTO dto);
+    ViewingRequest toEntity(ViewingRequestDTO dto);
 
-    default Order toEntityWithRelations(OrderDTO dto) {
-        Order entity = toEntity(dto);
+    default ViewingRequest toEntityWithRelations(ViewingRequestDTO dto) {
+        ViewingRequest entity = toEntity(dto);
         User user = userMapper().toEntity(dto.getUser());
         entity.setUser(user);
         if (dto.getProperty() != null) {
@@ -32,10 +32,10 @@ public interface OrderMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "property", ignore = true)
-    OrderDTO toDto(Order order);
+    ViewingRequestDTO toDto(ViewingRequest viewingRequest);
 
-    default OrderDTO toDtoWithRelations(Order entity){
-        OrderDTO dto = toDto(entity);
+    default ViewingRequestDTO toDtoWithRelations(ViewingRequest entity){
+        ViewingRequestDTO dto = toDto(entity);
         UserDTO user = userMapper().toDto(entity.getUser());
         dto.setUser(user);
         if (entity.getProperty() != null) {

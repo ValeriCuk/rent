@@ -9,7 +9,7 @@ import java.sql.Date;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class OrderDTO {
+public class ViewingRequestDTO {
 
     @EqualsAndHashCode.Include
     private Long id;

@@ -11,7 +11,7 @@ import java.sql.Date;
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class Order {
+public class ViewingRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
