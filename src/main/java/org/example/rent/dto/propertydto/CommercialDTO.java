@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class CommercialDTO extends PropertyDTO {
-    private int rooms;
     @NotNull
     private int floor;
 }

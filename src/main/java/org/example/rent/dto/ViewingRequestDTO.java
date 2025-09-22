@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.rent.dto.propertydto.PropertyDTO;
+import org.example.rent.other.ViewingRequestStatus;
 
 import java.sql.Date;
 
@@ -14,7 +15,7 @@ public class ViewingRequestDTO {
     @EqualsAndHashCode.Include
     private Long id;
     private String comments;
-    private boolean status;
+    private ViewingRequestStatus status;
     private Date date;
     @NotNull
     private UserDTO user;

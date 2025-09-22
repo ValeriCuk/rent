@@ -38,7 +38,7 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
         List<D> dtoList = (List<D>) list.stream()
                 .map(propertyMapper::toDTOWithRelations)
                 .collect(Collectors.toList());
-        log.info("Get all property through PropertyService with dtoList size: " + dtoList.size());
+        log.info("Get all property through PropertyService with dtoList size: " + dtoList.size() + ", type: " + dtoList.get(0).getClass());
         return dtoList;
     }
 
@@ -47,7 +47,7 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
     public void save(D dto) {
         T property = (T) propertyMapper.toEntityWithRelations(dto);
         propertyRepository.save(property);
-        log.info("Save property through PropertyService with id: " + property.getId());
+        log.info("Save property through PropertyService with id: " + property.getId() + ", type: " + property.getClass());
     }
 
     //delete(Long id)
@@ -55,7 +55,7 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
     public void delete(Long id) {
         T property = propertyRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found through PropertyService(delete) with id: " + id));
         propertyRepository.delete(property);
-        log.info("Delete property through PropertyService with id: " + id);
+        log.info("Delete property through PropertyService with id: " + id + ", type: " + property.getClass());
     }
 
     //update(Long id, DTO dto)

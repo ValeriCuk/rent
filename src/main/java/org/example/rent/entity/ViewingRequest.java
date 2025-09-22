@@ -3,6 +3,7 @@ package org.example.rent.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.entity.property.Property;
+import org.example.rent.other.ViewingRequestStatus;
 
 import java.sql.Date;
 
@@ -19,7 +20,7 @@ public class ViewingRequest {
     private Long id;
 
     private String comments;
-    private boolean status;
+    private ViewingRequestStatus status;
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY)
