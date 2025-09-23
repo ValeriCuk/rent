@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.rent.dto.propertydto.PropertyDTO;
 import org.example.rent.entity.Photo;
 import org.example.rent.other.BuildingStatus;
 
@@ -18,6 +17,7 @@ public class BuildingDTO {
     private Long id;
     private String buildingName;
     private BuildingStatus status;
+    private LocationDTO locationDTO;
     @NotNull
     @Min(3)
     private int floors;

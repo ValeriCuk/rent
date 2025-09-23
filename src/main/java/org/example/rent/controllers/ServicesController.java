@@ -2,7 +2,6 @@ package org.example.rent.controllers;
 
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.dto.ServicesDTO;
-import org.example.rent.dto.ViewingRequestDTO;
 import org.example.rent.services.ServicesService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +47,12 @@ public class ServicesController {
         return ResponseEntity.ok(dto);
     }
 
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Void>  updateStatus(@PathVariable Long id, @RequestBody String status) {
+        servicesService.updateStatusServices(id, status);
+        return ResponseEntity.noContent().build();
+    }
+
     @DeleteMapping
     public ResponseEntity<Void> deleteAll() {
         servicesService.deleteAll();
@@ -60,9 +65,4 @@ public class ServicesController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<Void>  updateStatus(@PathVariable Long id, @RequestBody String status) {
-        servicesService.updateStatusServices(id, status);
-        return ResponseEntity.noContent().build();
-    }
 }

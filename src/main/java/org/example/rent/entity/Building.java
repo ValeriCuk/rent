@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.rent.entity.property.Property;
 import org.example.rent.other.BuildingStatus;
+import org.example.rent.other.Location;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public class Building {
 
     private String buildingName;
     private BuildingStatus status;
+    @Embedded
+    private Location location;
     private int floors;
     private int insideArea;
     private int outsideArea;
