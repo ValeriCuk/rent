@@ -94,7 +94,7 @@ public class BuildingService {
 
     //updateStatus(Long id, BuildingStatus status)
     @Transactional
-    public void updateStatus(Long id, String status){
+    public void updateStatusBuilding(Long id, String status){
         BuildingStatus newStatus = parseStatus(status);
         Building building = buildingRepository.findById(id).orElseThrow(() -> new NotFoundException("Building with id " + id + " not found"));
         building.setStatus(newStatus);

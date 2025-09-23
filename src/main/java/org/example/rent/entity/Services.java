@@ -2,6 +2,7 @@ package org.example.rent.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.rent.other.ServicesStatus;
 
 import java.sql.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Services {
     private String title;
     private String description;
     private Date date;
+    private ServicesStatus status;
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)

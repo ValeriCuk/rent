@@ -51,7 +51,7 @@ public class NewBuildingsController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Void>  updateStatus(@PathVariable Long id, @RequestBody String status) {
-        buildingService.updateStatus(id, status);
+        buildingService.updateStatusBuilding(id, status);
         return ResponseEntity.noContent().build();
     }
 
@@ -64,6 +64,4 @@ public class NewBuildingsController {
         return ResponseEntity.ok(dto);
 
     }
-
-
 }

@@ -87,7 +87,7 @@ public class ViewingRequestService {
 
     //updateStatus(Long id, String status)
     @Transactional
-    public void updateStatus(Long id, String status){
+    public void updateStatusViewingRequest(Long id, String status){
         ViewingRequestStatus newStatus = parseStatus(status);
         ViewingRequest viewingRequest = viewingRequestRepository.findById(id).orElseThrow(() -> new NotFoundException("Viewing Request with id: " + id + " not found"));
         viewingRequest.setStatus(newStatus);

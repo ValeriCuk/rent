@@ -3,6 +3,7 @@ package org.example.rent.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.example.rent.other.ServicesStatus;
 
 import java.sql.Date;
 import java.util.List;
@@ -18,4 +19,5 @@ public class ServicesDTO {
     @NotNull
     private Date date;
     private List<PhotoDTO> photosDTO;
+    private ServicesStatus status;
 }

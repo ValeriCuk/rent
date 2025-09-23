@@ -60,7 +60,7 @@ public class ViewingRequestController {
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Void>  updateStatus(@PathVariable Long id, @RequestBody String status) {
-        viewingRequestService.updateStatus(id, status);
+        viewingRequestService.updateStatusViewingRequest(id, status);
         return ResponseEntity.noContent().build();
     }
 }
