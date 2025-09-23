@@ -92,6 +92,7 @@ public class ViewingRequestService {
         ViewingRequest viewingRequest = viewingRequestRepository.findById(id).orElseThrow(() -> new NotFoundException("Viewing Request with id: " + id + " not found"));
         viewingRequest.setStatus(newStatus);
         viewingRequestRepository.save(viewingRequest);
+        log.info("Update status of viewing request with id: " + id);
     }
 
     private ViewingRequestStatus parseStatus(String status){

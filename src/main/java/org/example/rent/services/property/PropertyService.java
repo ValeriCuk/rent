@@ -1,13 +1,19 @@
 package org.example.rent.services.property;
 
 import org.apache.logging.log4j.Logger;
+import org.example.rent.dto.PhotoDTO;
+import org.example.rent.entity.Building;
+import org.example.rent.entity.Photo;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
 import org.example.rent.repositories.interfaces.properties.PropertyRepository;
+import org.example.rent.services.PhotoService;
+import org.example.rent.services.mappers.PhotoMapper;
 import org.example.rent.services.mappers.property.PropertyMapper;
 import org.example.rent.entity.property.Property;
 import org.example.rent.dto.propertydto.PropertyDTO;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,13 +21,21 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unchecked")
 public abstract class PropertyService<T extends Property, D extends PropertyDTO> {
 
+    protected final PhotoService photoService;
+    protected final PhotoMapper photoMapper;
     protected final PropertyRepository<T> propertyRepository;
     protected final PropertyMapper propertyMapper;
     private final Logger log = CustomLogger.getLog();
 
-    protected PropertyService(PropertyRepository<T> propertyRepository, PropertyMapper propertyMapper) {
+    protected PropertyService(
+            PropertyRepository<T> propertyRepository,
+            PropertyMapper propertyMapper,
+            PhotoService photoService,
+            PhotoMapper photoMapper) {
         this.propertyRepository = propertyRepository;
         this.propertyMapper = propertyMapper;
+        this.photoService = photoService;
+        this.photoMapper = photoMapper;
     }
 
     //getById(Long id)
@@ -48,6 +62,28 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
         T property = (T) propertyMapper.toEntityWithRelations(dto);
         propertyRepository.save(property);
         log.info("Save property through PropertyService with id: " + property.getId() + ", type: " + property.getClass());
+    }
+
+    //savePhotoProperty(Long id, MultipartFile file)
+    @Transactional
+    public PhotoDTO storePhotoProperty(Long id, MultipartFile file) {
+        T property = propertyRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Property not found"));
+
+        PhotoDTO photoDTO = photoService.store(file);
+        Photo photoFoSaving = photoMapper.toEntity(photoDTO);
+        photoFoSaving.setId(photoDTO.getId());
+        property.getPhotos().add(photoFoSaving);
+
+        propertyRepository.save(property);
+        return photoDTO;
+    }
+
+    //deleteAll()
+    @Transactional
+    public void deleteAll() {
+        propertyRepository.deleteAll();
+        log.info("Delete all property through PropertyService with type: " + propertyRepository.getClass().getName());
     }
 
     //delete(Long id)

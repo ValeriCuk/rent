@@ -24,6 +24,6 @@ public class Services {
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "photo_id")
+    @JoinColumn(name = "services_id")
     private List<Photo> photos;
 }

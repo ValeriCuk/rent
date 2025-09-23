@@ -19,5 +19,5 @@ public class Photo {
     private String fileName;
     private String format;
     private long size;
-
+    private String url;
 }

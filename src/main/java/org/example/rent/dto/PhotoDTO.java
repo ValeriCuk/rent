@@ -16,4 +16,5 @@ public class PhotoDTO {
     @NotNull
     private String format;
     private long size;
+    private String url;
 }

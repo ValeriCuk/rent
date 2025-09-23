@@ -1,21 +1,31 @@
 package org.example.rent.services;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.Logger;
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.entity.Photo;
+import org.example.rent.exceptions.FileSavingException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
 import org.example.rent.repositories.interfaces.PhotoRepository;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class PhotoService {
 
+    private final Path rootLocation = Paths.get("src/main/resources/static/uploads/photos");
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
     private final Logger log = CustomLogger.getLog();
@@ -41,10 +51,13 @@ public class PhotoService {
 
     //save(DTO dto)
     @Transactional
-    public void save(PhotoDTO photoDTO) {
+    public PhotoDTO save(PhotoDTO photoDTO) {
         Photo photo = photoMapper.toEntity(photoDTO);
-        photoRepository.save(photo);
+        Photo save = photoRepository.save(photo);
         log.info("Save photo with id: " + photo.getId());
+        PhotoDTO savedPhotoDTO = photoMapper.toDto(save);
+        savedPhotoDTO.setId(save.getId());
+        return savedPhotoDTO;
     }
 
     //delete(Long id)
@@ -65,5 +78,30 @@ public class PhotoService {
         photo.setId(id);
         photoRepository.save(photo);
         log.info("Update photo with id: " + id);
+    }
+
+    //savePhotoFile()
+    @Transactional
+    public PhotoDTO store(MultipartFile file){
+        try {
+            String originalFilename = file.getOriginalFilename();
+            String ext = FilenameUtils.getExtension(originalFilename);
+            String fileName = UUID.randomUUID().toString() + "." + ext;
+
+            Path destination = rootLocation.resolve(fileName);
+            Files.createDirectories(destination.getParent());
+            Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+
+            Photo photo = new Photo();
+            photo.setFileName(fileName);
+            photo.setFormat(ext);
+            photo.setSize(file.getSize());
+            photo.setUrl("/uploads/photos/" + photo.getFileName());
+            PhotoDTO photoDTO = save(photoMapper.toDto(photo));
+            log.info("Save photo with id: " + photoDTO.getId());
+            return photoDTO;
+        }catch (IOException ex){
+            throw new FileSavingException("Error storing file: " + ex.getMessage());
+        }
     }
 }
