@@ -2,17 +2,23 @@ package org.example.rent.services.mappers.property;
 
 import org.example.rent.dto.propertydto.HouseDTO;
 import org.example.rent.entity.property.House;
+import org.example.rent.services.mappers.LocationMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {PropertyMapper.class})
-public interface HouseMapper {
+@Mapper(componentModel = "spring", uses = {
+        PropertyMapper.class,
+        LocationMapper.class})
+public abstract class HouseMapper {
+    @Autowired
+    LocationMapper locationMapper;
 
     @Mapping(target = "id", ignore = true)
-    House toEntity(HouseDTO dto);
+    public abstract House toEntity(HouseDTO dto);
 
-    default House toEntityWithRelations(HouseDTO dto) {
-        House entity = (House) propertyMapper().toEntity(dto);
+    public House toEntityWithRelations(HouseDTO dto, PropertyMapper propertyMapper) {
+        House entity = (House) propertyMapper.toEntity(dto);
 
         entity.setBedrooms(dto.getBedrooms());
         entity.setFloors(dto.getFloors());
@@ -20,16 +26,14 @@ public interface HouseMapper {
         return entity;
     }
 
-    HouseDTO toDto(House entity);
+    public abstract HouseDTO toDto(House entity);
 
-    default HouseDTO toDtoWithRelations(House entity) {
-        HouseDTO dto = (HouseDTO) propertyMapper().toDto(entity);
+    public HouseDTO toDtoWithRelations(House entity, PropertyMapper propertyMapper) {
+        HouseDTO dto = (HouseDTO) propertyMapper.toDto(entity);
 
         dto.setBedrooms(entity.getBedrooms());
         dto.setFloors(entity.getFloors());
         dto.setOutsideArea(entity.getOutsideArea());
         return dto;
     }
-
-    PropertyMapper propertyMapper();
 }

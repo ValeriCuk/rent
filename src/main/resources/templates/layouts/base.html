@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+
+</head>
+    <body class="hold-transition sidebar-mini">
+        <!-- Header -->
+        <div th:replace="~{fragments/admin-header :: admin-header}"></div>
+
+        <div class="wrapper d-flex" style="width: auto">
+            <!-- Sidebar -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+            </aside>
+            <!-- Content -->
+            <div class="content-wrapper w-100" th:if="${contentTemplate != null}">
+                <div th:replace="~{${contentTemplate} :: ${contentFragment}}"></div>
+            </div>
+        </div>
+        <script src="/adminlte/dist/js/adminlte.js"></script>
+    </body>
+</html>

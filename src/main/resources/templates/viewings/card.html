@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+<div th:fragment="content">
+<div class="d-flex justify-content-between align-items-center ms-5 me-5 mt-4 mb-2">
+    <h1 class="fs-4 mb-0">Перегляд заявки</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/viewings}">Заявки</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Перегляд</li>
+        </ol>
+    </nav>
+</div>
+<hr class=" mb-4">
+
+<!-- Таблиця з деталями -->
+<div class="ms-5 me-5">
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <td class="fw-semibold" style="width: 200px;">Ім’я</td>
+            <td th:text="${viewing.user.username}"></td>
+        </tr>
+        <tr>
+            <td class="fw-semibold">Телефон</td>
+            <td th:text="${viewing.user.phone}"></td>
+        </tr>
+        <tr>
+            <td class="fw-semibold">Email</td>
+            <td th:text="${viewing.user.email}"></td>
+        </tr>
+        <tr>
+            <td class="fw-semibold">Коментар</td>
+            <td th:text="${viewing.comments}"></td>
+        </tr>
+        <tr>
+            <td class="fw-semibold">Дата</td>
+            <td th:text="${#dates.format(viewing.date, 'dd.MM.yyyy - HH:mm')}"></td>
+        </tr>
+        <tr>
+            <td class="fw-semibold">Статус</td>
+            <td>
+                <span th:switch="${viewing.status.name()}">
+                    <span th:case="'NEW'" class="badge bg-warning" style="width: 90px">Нова</span>
+                    <span th:case="'PROCESSED'" class="badge bg-success" style="width: 90px">Оброблена</span>
+                </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>

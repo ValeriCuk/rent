@@ -21,13 +21,13 @@ public abstract class PropertyDTO {
     @NotNull
     private BigDecimal area;
     @NotNull
-    private AddressDTO addressDTO;
+    private AddressDTO address;
     @NotNull
     private BigDecimal pricePerSquareMeter;
     @NotNull
     private BigDecimal totalPrice;
     @NotNull
     private Date date;
-    private BuildingDTO buildingDTO;
-    private List<PhotoDTO> photosDTO;
+    private BuildingDTO building;
+    private List<PhotoDTO> photos;
 }

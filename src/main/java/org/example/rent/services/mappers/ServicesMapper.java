@@ -6,21 +6,25 @@ import org.example.rent.entity.Photo;
 import org.example.rent.entity.Services;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring", uses = PhotoMapper.class)
-public interface ServicesMapper {
+public abstract class ServicesMapper {
+
+    @Autowired
+    private PhotoMapper photoMapper;
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "photosDTO", ignore = true)
-    Services toEntity(ServicesDTO dto);
+    @Mapping(target = "photos", ignore = true)
+    public abstract Services toEntity(ServicesDTO dto);
 
-    default Services toEntityWithRelations(ServicesDTO dto) {
+    public Services toEntityWithRelations(ServicesDTO dto) {
         Services entity = toEntity(dto);
-        if (!dto.getPhotosDTO().isEmpty()) {
-            List<Photo> photos = dto.getPhotosDTO().stream()
-                    .map(photoMapper()::toEntity)
+        if (!dto.getPhotos().isEmpty()) {
+            List<Photo> photos = dto.getPhotos().stream()
+                    .map(photoMapper::toEntity)
                     .toList();
             entity.setPhotos(photos);
         }
@@ -28,19 +32,17 @@ public interface ServicesMapper {
     }
 
     @Mapping(target = "photos", ignore = true)
-    ServicesDTO toDto(Services entity);
+    public abstract ServicesDTO toDto(Services entity);
 
-    default ServicesDTO toDTOWithRelations(Services entity) {
+    public ServicesDTO toDTOWithRelations(Services entity) {
         ServicesDTO dto = toDto(entity);
 
         if (!entity.getPhotos().isEmpty()) {
             List<PhotoDTO> photos = entity.getPhotos().stream()
-                    .map(photoMapper()::toDto)
+                    .map(photoMapper::toDto)
                     .toList();
-            dto.setPhotosDTO(photos);
+            dto.setPhotos(photos);
         }
         return dto;
     }
-
-    PhotoMapper photoMapper();
 }

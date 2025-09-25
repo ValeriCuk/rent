@@ -2,24 +2,28 @@ package org.example.rent.services.mappers.property;
 
 import org.example.rent.dto.propertydto.PlotsDTO;
 import org.example.rent.entity.property.Plots;
+import org.example.rent.services.mappers.LocationMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {PropertyMapper.class})
-public interface PlotsMapper {
+@Mapper(componentModel = "spring", uses = {
+        PropertyMapper.class,
+        LocationMapper.class})
+public abstract class PlotsMapper {
+    @Autowired
+    LocationMapper locationMapper;
 
     @Mapping(target = "id", ignore = true)
-    Plots toEntity(PlotsDTO dto);
+    public abstract Plots toEntity(PlotsDTO dto);
 
-    default Plots toEntityWithRelations(PlotsDTO dto) {
-        return (Plots) propertyMapper().toEntity(dto);
+    public Plots toEntityWithRelations(PlotsDTO dto, PropertyMapper propertyMapper) {
+        return (Plots) propertyMapper.toEntity(dto);
     }
 
-    PlotsDTO toDto(Plots entity);
+    public abstract PlotsDTO toDto(Plots entity);
 
-    default  PlotsDTO toDtoWithRelations(Plots entity) {
-        return (PlotsDTO) propertyMapper().toDto(entity);
+    public  PlotsDTO toDtoWithRelations(Plots entity, PropertyMapper propertyMapper) {
+        return (PlotsDTO) propertyMapper.toDto(entity);
     }
-
-    PropertyMapper propertyMapper();
 }

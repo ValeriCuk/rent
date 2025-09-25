@@ -10,5 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Commercial extends Property {
-    private int bedfloor;
+
+    private int bedrooms;
+    private int floor;
 }

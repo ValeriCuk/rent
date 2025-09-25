@@ -9,22 +9,29 @@ import org.example.rent.entity.User;
 import org.example.rent.entity.property.Property;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring" , uses = {
         PropertyMapper.class,
         UserMapper.class})
-public interface ViewingRequestMapper {
+public abstract class ViewingRequestMapper {
+
+    @Autowired
+    private PropertyMapper propertyMapper;
+    @Autowired
+    private UserMapper userMapper;
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "property", ignore = true)
-    ViewingRequest toEntity(ViewingRequestDTO dto);
+    public abstract ViewingRequest toEntity(ViewingRequestDTO dto);
 
-    default ViewingRequest toEntityWithRelations(ViewingRequestDTO dto) {
+    public ViewingRequest toEntityWithRelations(ViewingRequestDTO dto) {
         ViewingRequest entity = toEntity(dto);
-        User user = userMapper().toEntity(dto.getUser());
+        User user = userMapper.toEntity(dto.getUser());
         entity.setUser(user);
         if (dto.getProperty() != null) {
-            Property property = propertyMapper().toEntityWithRelations(dto.getProperty());
+            Property property = propertyMapper.toEntityWithRelations(dto.getProperty());
             entity.setProperty(property);
         }
         return entity;
@@ -32,19 +39,16 @@ public interface ViewingRequestMapper {
 
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "property", ignore = true)
-    ViewingRequestDTO toDto(ViewingRequest viewingRequest);
+    public abstract ViewingRequestDTO toDto(ViewingRequest viewingRequest);
 
-    default ViewingRequestDTO toDtoWithRelations(ViewingRequest entity){
+    public ViewingRequestDTO toDtoWithRelations(ViewingRequest entity){
         ViewingRequestDTO dto = toDto(entity);
-        UserDTO user = userMapper().toDto(entity.getUser());
+        UserDTO user = userMapper.toDto(entity.getUser());
         dto.setUser(user);
         if (entity.getProperty() != null) {
-            PropertyDTO property = propertyMapper().toDTOWithRelations(entity.getProperty());
+            PropertyDTO property = propertyMapper.toDTOWithRelations(entity.getProperty());
             dto.setProperty(property);
         }
         return dto;
     }
-
-    PropertyMapper propertyMapper();
-    UserMapper userMapper();
 }

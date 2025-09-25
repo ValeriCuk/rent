@@ -1,6 +1,7 @@
 package org.example.rent.dto;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.rent.dto.propertydto.PropertyDTO;
@@ -9,6 +10,7 @@ import org.example.rent.other.ViewingRequestStatus;
 import java.sql.Date;
 
 @Data
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ViewingRequestDTO {
 
@@ -21,5 +23,4 @@ public class ViewingRequestDTO {
     private UserDTO user;
     @NotNull
     private PropertyDTO property;
-
 }

@@ -18,6 +18,6 @@ public class ServicesDTO {
     private String description;
     @NotNull
     private Date date;
-    private List<PhotoDTO> photosDTO;
+    private List<PhotoDTO> photos;
     private ServicesStatus status;
 }

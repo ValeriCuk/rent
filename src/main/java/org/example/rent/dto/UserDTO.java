@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.management.relation.Role;
 
@@ -27,5 +28,22 @@ public class UserDTO {
     @Pattern(regexp = PHONE_PATTERN, message = "Invalid content type")
     private String phone;
     private Role role;
+
+    public UserDTO(Long id, String username, String password, String email, String phone, Role role) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.role = role;
+    }
+
+    public UserDTO(){}
+
+    public UserDTO(String username, String email, String phone) {
+        this.username = username;
+        this.email = email;
+        this.phone = phone;
+    }
 
 }

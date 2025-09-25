@@ -2,32 +2,37 @@ package org.example.rent.services.mappers.property;
 
 import org.example.rent.dto.propertydto.CommercialDTO;
 import org.example.rent.entity.property.Commercial;
+import org.example.rent.services.mappers.LocationMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {PropertyMapper.class})
-public interface CommercialMapper {
+@Mapper(componentModel = "spring", uses = {
+        PropertyMapper.class,
+        LocationMapper.class})
+public abstract class CommercialMapper {
+
+    @Autowired
+    LocationMapper locationMapper;
 
     @Mapping(target = "id", ignore = true)
-    Commercial toEntity(CommercialDTO dto);
+    public abstract Commercial toEntity(CommercialDTO dto);
 
-    default Commercial toEntityWithRelations(CommercialDTO dto) {
-        Commercial entity = (Commercial) propertyMapper().toEntity(dto);
+    public Commercial toEntityWithRelations(CommercialDTO dto, PropertyMapper propertyMapper) {
+        Commercial entity = (Commercial) propertyMapper.toEntity(dto);
 
         entity.setFloor(dto.getFloor());
-        entity.setRooms(dto.getRooms());
+        entity.setBedrooms(dto.getBedrooms());
 
         return entity;
     }
 
-    CommercialDTO toDTO(Commercial entity);
+    public abstract CommercialDTO toDTO(Commercial entity);
 
-    default CommercialDTO toDTOWithRelations(Commercial entity) {
-        CommercialDTO dto = (CommercialDTO) propertyMapper().toDto(entity);
+    public CommercialDTO toDTOWithRelations(Commercial entity, PropertyMapper propertyMapper) {
+        CommercialDTO dto = (CommercialDTO) propertyMapper.toDto(entity);
         dto.setFloor(entity.getFloor());
-        dto.setRooms(entity.getRooms());
+        dto.setBedrooms(entity.getBedrooms());
         return dto;
     }
-
-    PropertyMapper propertyMapper();
 }

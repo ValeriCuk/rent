@@ -17,7 +17,7 @@ public class BuildingDTO {
     private Long id;
     private String buildingName;
     private BuildingStatus status;
-    private LocationDTO locationDTO;
+    private LocationDTO location;
     @NotNull
     @Min(3)
     private int floors;
@@ -27,6 +27,6 @@ public class BuildingDTO {
     private int year;
     @EqualsAndHashCode.Include
     @NotNull
-    private AddressDTO addressDTO;
+    private AddressDTO address;
     private List<Photo> photos;
 }
