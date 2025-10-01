@@ -4,12 +4,17 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.example.rent.entity.Photo;
 import org.example.rent.other.BuildingStatus;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
+@SuperBuilder
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class BuildingDTO {
 
@@ -28,5 +33,5 @@ public class BuildingDTO {
     @EqualsAndHashCode.Include
     @NotNull
     private AddressDTO address;
-    private List<Photo> photos;
+    private Set<Photo> photos;
 }

@@ -1,10 +1,8 @@
 package org.example.rent.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.example.rent.entity.property.Property;
 
 @Entity
@@ -23,4 +21,22 @@ public class Address {
     private String district;
     private String buildingNumber;
     private Integer apartmentNumber;
+
+
+    public Address (String region, String street, String city, String district, String buildingNumber, Integer apartmentNumber) {
+        this.region = region;
+        this.street = street;
+        this.city = city;
+        this.district = district;
+        this.buildingNumber = buildingNumber;
+        this.apartmentNumber = apartmentNumber;
+    }
+
+    public Address (String region, String street, String city, String district, String buildingNumber) {
+        this.region = region;
+        this.street = street;
+        this.city = city;
+        this.district = district;
+        this.buildingNumber = buildingNumber;
+    }
 }

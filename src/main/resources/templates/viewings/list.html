@@ -20,85 +20,138 @@
     </div>
     <!-- Кнопка очистити -->
     <div class="d-flex justify-content-end align-items-center ms-5 mb-2 me-5 border rounded px-3 py-2 bg-light">
-        <button type="button" class="btn btn-secondary btn-sm">
-            <i class="fas fa-trash me-1"></i> Очистити
-        </button>
+        <form th:action="@{/viewings/delete}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <button type="submit" class="btn btn-secondary btn-sm">
+                <i class="fas fa-trash me-1"></i> Очистити
+            </button>
+        </form>
     </div>
     <!-- Table-titles -->
-    <div class="table-responsive ms-5 me-5">
-        <table class="table table-bordered table-striped w-100">
-            <thead>
-            <tr>
-                <th class="fs-7 fw-semibold" style="width: 180px">Ім'я</th>
-                <th class="fs-7 fw-semibold" style="width: 130px">Телефон</th>
-                <th class="fs-7 fw-semibold" style="width: 150px">Email</th>
-                <th class="fs-7 fw-semibold" style="width: auto">Коментар</th>
-                <th class="fs-7 fw-semibold" style="width: 150px">Дата</th>
-                <th class="fs-7 fw-semibold" style="width: 100px">Статус</th>
-                <th class="fs-7 fw-semibold" style="width: 100px">Дії</th>
-            </tr>
-            <!-- Рядок фільтрів -->
-            <tr>
-                <td><input type="text" class="form-control form-control-sm" placeholder="Ім'я"></td>
-                <td><input type="text" class="form-control form-control-sm" placeholder="Телефон"></td>
-                <td><input type="text" class="form-control form-control-sm" placeholder="Email"></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <select class="form-select form-select-sm">
-                        <option value="">Всі</option>
-                        <option value="NEW">Нова</option>
-                        <option value="PROCESSED">Закрита</option>
-                    </select>
-                </td>
-                <td>
-                    <button type="submit" class="btn btn-primary btn-sm">Фільтр</button>
-                </td>
-            </tr>
-            </thead>
-            <!-- Таблиця -->
-            <tbody>
-            <tr th:each="v : ${viewings}">
-                <td th:text="${v.user.username}"></td>
-                <td th:text="${v.user.phone}"></td>
-                <td th:text="${v.user.email}"></td>
-                <td th:text="${v.comments}"></td>
-                <td th:text="${#dates.format(v.date, 'dd.MM.yyyy HH:mm')}"></td>
-                <td class="text-center">
-                        <span th:switch="${v.status.name()}">
-                            <span th:case="'NEW'" class="badge bg-warning" style="width: 90px">Нова</span>
-                            <span th:case="'PROCESSED'" class="badge bg-success" style="width: 90px">Оброблена</span>
-                        </span>
+    <form th:action="@{/viewings}" method="get">
+        <div class="table-responsive ms-5 me-5">
+            <table class="table table-bordered table-striped w-100">
+                <thead>
+                <tr>
+                    <th class="fs-7 fw-semibold" style="width: 180px">Ім'я</th>
+                    <th class="fs-7 fw-semibold" style="width: 130px">Телефон</th>
+                    <th class="fs-7 fw-semibold" style="width: 150px">Email</th>
+                    <th class="fs-7 fw-semibold" style="width: auto">Коментар</th>
+                    <th class="fs-7 fw-semibold" style="width: 150px">Дата</th>
+                    <th class="fs-7 fw-semibold" style="width: 100px">Статус</th>
+                    <th class="fs-7 fw-semibold" style="width: 100px">Дії</th>
+                </tr>
+                <!-- Рядок фільтрів -->
+                <tr>
+                    <td><input type="text" name="username" th:value="${username}" class="form-control form-control-sm" placeholder="Ім'я"></td>
+                    <td><input type="text" name="phone" th:value="${phone}" class="form-control form-control-sm" placeholder="Телефон"></td>
+                    <td><input type="text" name="email" th:value="${email}" class="form-control form-control-sm" placeholder="Email"></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select name="status" th:value="${status}" class="form-select form-select-sm">
+                            <option value="">Всі</option>
+                            <option value="NEW">Нова</option>
+                            <option value="PROCESSED">Оброблена</option>
+                        </select>
+                    </td>
+                <!-- Рядок кнопок -->
+                    <td colspan="7" class="text-center">
+                        <div class="d-inline-flex gap-2">
+                            <button type="submit"
+                                    th:if="${#strings.isEmpty(username) and #strings.isEmpty(phone) and #strings.isEmpty(email) and status == null}"
+                                    class="btn btn-primary btn-sm">
+                                Фільтр
+                            </button>
+                            <a th:if="${not (#strings.isEmpty(username) and #strings.isEmpty(phone) and #strings.isEmpty(email) and status == null)}"
+                               th:href="@{/viewings}"
+                               class="btn btn-outline-secondary btn-sm">
+                                Очистити фільтр
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </thead>
+                <!-- Таблиця -->
+                <tbody>
+                <tr th:each="v : ${viewingsPage.content}">
+                    <td th:text="${v.user.username}"></td>
+                    <td th:text="${v.user.phone}"></td>
+                    <td th:text="${v.user.email}"></td>
+                    <td th:text="${v.comments}"></td>
+                    <td th:text="${#dates.format(v.date, 'dd.MM.yyyy HH:mm')}"></td>
 
-                </td>
-                <td class="text-center">
-                    <!-- Кнопка перегляду -->
-                    <a th:href="@{'/viewings/' + ${v.id}}" class="btn btn-sm btn-info">
-                        👁️
-                    </a>
-                    <!-- Кнопка видалення -->
-                    <a th:href="@{'/viewings/' + ${v.id} + '/delete'}" class="btn btn-sm btn-danger">
-                        🗑️
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                    <!-- Статус -->
+                    <td class="text-center">
+                        <form th:action="@{'/viewings/' + ${v.id} + '/status'}" method="post">
+                            <button type="submit" class="badge"
+                                    th:classappend="${v.status.name() == 'NEW'} ? ' bg-warning' : ' bg-success'"
+                                    style="width: 90px; border:none; cursor:pointer">
+                                <span th:text="${v.status.name() == 'NEW' ? 'Нова' : 'Оброблена'}"></span>
+                            </button>
+                        </form>
+                    </td>
+
+
+                    <td class="text-center">
+                        <!-- Кнопка перегляду -->
+                        <a th:href="@{'/viewings/' + ${v.id}}" class="btn btn-sm btn-info">
+                            👁️
+                        </a>
+                        <!-- Кнопка видалення -->
+                        <form th:action="@{'/viewings/' + ${v.id} + '/delete'}" method="post" style="display:inline;">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                🗑️
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
 
     <!-- Сторінки -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">«</a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#">»</a>
-                </li>
-            </ul>
-        </nav>
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <!-- Назад -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/viewings(page=${currentPage - 1}, size=5,
+                                   username=${username},
+                                   phone=${phone},
+                                   email=${email},
+                                   status=${status})}">
+                    «
+                </a>
+            </li>
+
+            <!-- Номери сторінок -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/viewings(page=${i}, size=5,
+                                   username=${username},
+                                   phone=${phone},
+                                   email=${email},
+                                   status=${status})}"
+                   th:text="${i + 1}">
+                </a>
+            </li>
+
+            <!-- Вперед -->
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/viewings(page=${currentPage + 1}, size=5,
+                                   username=${username},
+                                   phone=${phone},
+                                   email=${email},
+                                   status=${status})}">
+                    »
+                </a>
+            </li>
+        </ul>
+    </nav>
 </div>

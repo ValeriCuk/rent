@@ -8,11 +8,12 @@ import org.example.rent.entity.Photo;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,7 +38,7 @@ public abstract class Property {
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     @JoinColumn(name = "property_id")
-    private List<Photo> photos;
+    private Set<Photo> photos;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "building_id")

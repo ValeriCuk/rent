@@ -2,20 +2,25 @@ package org.example.rent.services.property;
 
 import org.apache.logging.log4j.Logger;
 import org.example.rent.dto.PhotoDTO;
-import org.example.rent.entity.Building;
 import org.example.rent.entity.Photo;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
+import org.example.rent.other.PropertyType;
 import org.example.rent.repositories.interfaces.properties.PropertyRepository;
 import org.example.rent.services.PhotoService;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.example.rent.services.mappers.property.PropertyMapper;
 import org.example.rent.entity.property.Property;
 import org.example.rent.dto.propertydto.PropertyDTO;
+import org.springframework.data.domain.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unchecked")
@@ -46,14 +51,21 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
         return dto;
     }
 
-    //getAll()
-    public List<D> getAll() {
+    //getAllAsync
+    @Async
+    public CompletableFuture<List<D>> getAllAsync() {
         List<T> list = propertyRepository.findAll();
+
+        if (list.isEmpty()) {
+            log.info("The property list is empty in method getAllAsync, class - PropertyService");
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+
         List<D> dtoList = (List<D>) list.stream()
                 .map(propertyMapper::toDTOWithRelations)
                 .collect(Collectors.toList());
-        log.info("Get all property through PropertyService with dtoList size: " + dtoList.size() + ", type: " + dtoList.get(0).getClass());
-        return dtoList;
+        log.info("The property list through PropertyService in method getAllAsync, list size: " + dtoList.size() + ", type: " + dtoList.get(0).getClass());
+        return CompletableFuture.completedFuture(dtoList);
     }
 
     //save(DTO dto)

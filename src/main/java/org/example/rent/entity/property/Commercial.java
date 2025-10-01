@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
@@ -11,6 +12,5 @@ import lombok.Setter;
 @Entity
 public class Commercial extends Property {
 
-    private int bedrooms;
     private int floor;
 }

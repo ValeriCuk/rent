@@ -49,6 +49,7 @@ public abstract class ViewingRequestMapper {
             PropertyDTO property = propertyMapper.toDTOWithRelations(entity.getProperty());
             dto.setProperty(property);
         }
+        System.out.println("DTOs:" + dto.toString());
         return dto;
     }
 }

@@ -1,0 +1,139 @@
+<link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+<div th:fragment="content">
+    <!-- Title -->
+    <div class="d-flex justify-content-between align-items-center ms-5 me-5 mt-4 mb-2">
+        <h1 class="fs-4">Об'єкти</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Об'єкти</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Line -->
+    <hr class="border border-secondary opacity-50 mb-4">
+
+    <!-- Кнопка очистити -->
+    <div class="d-flex justify-content-end align-items-center ms-5 mb-2 me-5 border rounded px-3 py-2 bg-light">
+        <a th:href="@{/properties/deleteAll}" class="btn btn-secondary btn-sm">
+            <i class="fas fa-trash me-1"></i> Очистити
+        </a>
+    </div>
+
+    <!-- Table-titles -->
+    <div class="table-responsive ms-5 me-5">
+        <form th:action="@{/properties}" method="get">
+            <table class="table table-bordered table-striped w-100">
+                <thead>
+                <tr>
+                    <th class="fs-7 fw-semibold" style="width: 50px">ID</th>
+                    <th class="fs-7 fw-semibold" style="width: 150px">Тип нерухомості</th>
+                    <th class="fs-7 fw-semibold" style="width: 120px">Площа(м.кв.)</th>
+                    <th class="fs-7 fw-semibold" style="width: 120px">Ціна($)</th>
+                    <th class="fs-7 fw-semibold" style="width: 120px">Ціна за м.кв.($)</th>
+                    <th class="fs-7 fw-semibold" style="width: 120px">Кімнат</th>
+                    <th class="fs-7 fw-semibold" style="width: 120px">Поверх</th>
+                    <th class="fs-7 fw-semibold" style="width: auto">Поверховість</th>
+                    <th class="fs-7 fw-semibold" style="width: 180px">Дата</th>
+                </tr>
+                <!-- Рядок фільтрів -->
+                <tr>
+                    <td><input type="text" name="id" th:value="${id}" class="form-control form-control-sm" placeholder="ID"></td>
+                    <td>
+                        <select name="type" class="form-select form-select-sm">
+                            <option value="" th:selected="${type == null}">Всі</option>
+                            <option value="APARTMENT" th:selected="${type == 'APARTMENT'}">Квартира</option>
+                            <option value="HOUSE" th:selected="${type == 'HOUSE'}">Будинок</option>
+                            <option value="COMMERCIAL" th:selected="${type == 'COMMERCIAL'}">Комерція</option>
+                            <option value="PLOT" th:selected="${type == 'PLOT'}">Ділянка</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><input type="text" name="bedrooms" th:value="${bedrooms}" class="form-control form-control-sm" placeholder="Кімнат"></td>
+                    <td></td>
+                    <td></td>
+                    <td colspan="9" class="text-center">
+                        <div class="d-inline-flex gap-2">
+                            <button type="submit"
+                                    th:if="${id == null and type == null and #strings.isEmpty(bedrooms)}"
+                                    class="btn btn-primary btn-sm">
+                                Фільтр
+                            </button>
+                            <a th:if="${id != null or type != null or !#strings.isEmpty(bedrooms)}"
+                               th:href="@{/properties}"
+                               class="btn btn-outline-secondary btn-sm">
+                                Очистити фільтр
+                            </a>
+                        </div>
+                    </td>
+
+                </tr>
+
+                </thead>
+                <!-- Таблиця -->
+                <tbody>
+                <tr th:each="p : ${properties}">
+                    <td th:text="${p.id}"></td>
+                    <td>
+                    <span th:switch="${p.typeDisplay}">
+                        <span th:case="'APARTMENT'">Квартира</span>
+                        <span th:case="'HOUSE'">Будинок</span>
+                        <span th:case="'COMMERCIAL'">Комерція</span>
+                        <span th:case="'PLOT'">Ділянка</span>
+                        <span th:case="*"
+                              class="badge bg-dark">Невідомо</span>
+                    </span>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(p.area, 0, 'WHITESPACE', 2, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(p.totalPrice, 0, 'WHITESPACE', 0, 'POINT')}"></td>
+                    <td th:text="${#numbers.formatDecimal(p.pricePerSquareMeter, 0, 'WHITESPACE', 0, 'POINT')}"></td>
+                    <td th:text="${p.bedroomsDisplay}"></td>
+                    <td th:text="${p.floorDisplay}"></td>
+                    <td th:text="${p.floorsDisplay}"></td>
+                    <td th:text="${#dates.format(p.date, 'dd.MM.yyyy - HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    <!-- Сторінки -->
+    <nav aria-label="Page navigation" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/properties(page=${currentPage - 1}, size=5,
+                          id=${id},
+                          type=${type},
+                          bedrooms=${bedrooms})}">
+                    «
+                </a>
+
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/properties(page=${i}, size=5,
+                          id=${id},
+                          type=${type},
+                          bedrooms=${bedrooms})}"
+                   th:text="${i + 1}">
+                </a>
+
+            </li>
+            <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/properties(page=${currentPage + 1}, size=5,
+                          id=${id},
+                          type=${type},
+                          bedrooms=${bedrooms})}">
+                    «
+                </a>
+
+            </li>
+        </ul>
+    </nav>
+
+</div>

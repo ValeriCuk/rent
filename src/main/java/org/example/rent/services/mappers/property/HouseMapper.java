@@ -3,6 +3,8 @@ package org.example.rent.services.mappers.property;
 import org.example.rent.dto.propertydto.HouseDTO;
 import org.example.rent.entity.property.House;
 import org.example.rent.services.mappers.LocationMapper;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ public abstract class HouseMapper {
     LocationMapper locationMapper;
 
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(builder = @Builder( disableBuilder = true ))
     public abstract House toEntity(HouseDTO dto);
 
     public House toEntityWithRelations(HouseDTO dto, PropertyMapper propertyMapper) {
@@ -30,7 +33,6 @@ public abstract class HouseMapper {
 
     public HouseDTO toDtoWithRelations(House entity, PropertyMapper propertyMapper) {
         HouseDTO dto = (HouseDTO) propertyMapper.toDto(entity);
-
         dto.setBedrooms(entity.getBedrooms());
         dto.setFloors(entity.getFloors());
         dto.setOutsideArea(entity.getOutsideArea());

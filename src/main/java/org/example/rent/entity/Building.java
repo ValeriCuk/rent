@@ -9,7 +9,7 @@ import org.example.rent.entity.property.Property;
 import org.example.rent.other.BuildingStatus;
 import org.example.rent.other.Location;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -39,5 +39,5 @@ public class Building {
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     @JoinColumn(name = "building_id")
-    private List<Photo> photos;
+    private Set<Photo> photos;
 }

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RentApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RentApplication.class, args);
+        SpringApplication.run(RentApplication.class, new String[]{"seed"});
     }
 
 }

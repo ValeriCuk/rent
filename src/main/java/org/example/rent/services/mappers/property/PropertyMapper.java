@@ -19,14 +19,14 @@ import org.example.rent.services.mappers.AddressMapper;
 import org.example.rent.services.mappers.BuildingMapper;
 import org.example.rent.services.mappers.LocationMapper;
 import org.example.rent.services.mappers.PhotoMapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 import org.example.rent.entity.property.Property;
 import org.example.rent.dto.propertydto.PropertyDTO;
-import org.mapstruct.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 @Mapper(componentModel = "spring", uses = {
         AddressMapper.class,
@@ -65,6 +65,7 @@ public abstract class PropertyMapper {
     @Mapping(target = "address", ignore = true)
     @Mapping(target = "photos", ignore = true)
     @Mapping(target = "building", ignore = true)
+    @BeanMapping(builder = @Builder( disableBuilder = true ))
     public abstract Property toEntity(PropertyDTO dto);
 
     public Property toEntityWithRelations(PropertyDTO dto) {
@@ -75,11 +76,11 @@ public abstract class PropertyMapper {
             Address address = addressMapper.toEntity(dto.getAddress());
             entity.setAddress(address);
         }
-        //List<PhotoDTO> -> List<Photo>
+        //Set<PhotoDTO> -> Set<Photo>
         if (!dto.getPhotos().isEmpty()) {
-            List<Photo> photos = dto.getPhotos().stream()
+            Set<Photo> photos = dto.getPhotos().stream()
                     .map(photoMapper::toEntity)
-                    .toList();
+                    .collect(Collectors.toSet());
             entity.setPhotos(photos);
         }
         //BuildingDTO -> Building
@@ -108,6 +109,7 @@ public abstract class PropertyMapper {
     @Mapping(target = "address", ignore = true)
     @Mapping(target = "photos", ignore = true)
     @Mapping(target = "building", ignore = true)
+    @Mapping(target = "type", ignore = true)
     public abstract PropertyDTO toDto(Property entity);
 
     public PropertyDTO toDTOWithRelations(Property entity) {
@@ -118,11 +120,11 @@ public abstract class PropertyMapper {
             AddressDTO address = addressMapper.toDto(entity.getAddress());
             dto.setAddress(address);
         }
-        //List<Photo> -> List<PhotoDTO>
+        //Set<Photo> -> Set<PhotoDTO>
         if (!entity.getPhotos().isEmpty()) {
-            List<PhotoDTO> photos = entity.getPhotos().stream()
+            Set<PhotoDTO> photos = entity.getPhotos().stream()
                     .map(photoMapper::toDto)
-                    .toList();
+                    .collect(Collectors.toSet());
             dto.setPhotos(photos);
         }
         //Building -> BuildingDTO

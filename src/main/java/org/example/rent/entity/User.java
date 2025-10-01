@@ -1,10 +1,10 @@
 package org.example.rent.entity;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import javax.management.relation.Role;
-import java.util.List;
+import org.example.rent.other.Role;
 
 @Entity
 @Getter
@@ -25,5 +25,4 @@ public class User {
     private String email;
     private String phone;
     private Role role;
-
 }

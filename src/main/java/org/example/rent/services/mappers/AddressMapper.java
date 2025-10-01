@@ -7,12 +7,15 @@ import org.example.rent.entity.Address;
 import org.example.rent.entity.Building;
 import org.example.rent.entity.property.Property;
 import org.example.rent.services.mappers.property.PropertyMapper;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AddressMapper {
     @Mapping(target = "id", ignore = true)
+    @BeanMapping(builder = @Builder( disableBuilder = true ))
     Address toEntity(AddressDTO dto);
 
     AddressDTO toDto(Address entity);

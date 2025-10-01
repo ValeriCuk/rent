@@ -4,6 +4,8 @@ import org.example.rent.dto.AddressDTO;
 import org.example.rent.dto.BuildingDTO;
 import org.example.rent.entity.Address;
 import org.example.rent.entity.Building;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public abstract class BuildingMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "address", ignore = true)
+    @BeanMapping(builder = @Builder( disableBuilder = true ))
     public abstract Building toEntity(BuildingDTO dto);
 
     public Building toEntityWithRelations(BuildingDTO dto) {

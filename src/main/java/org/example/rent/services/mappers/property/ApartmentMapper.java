@@ -3,6 +3,8 @@ package org.example.rent.services.mappers.property;
 import org.example.rent.dto.propertydto.ApartmentDTO;
 import org.example.rent.entity.property.Apartment;
 import org.example.rent.services.mappers.BuildingMapper;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ public abstract class ApartmentMapper {
     @Mapping(target = "address", ignore = true)
     @Mapping(target = "photos", ignore = true)
     @Mapping(target = "building", ignore = true)
+    @BeanMapping(builder = @Builder( disableBuilder = true ))
     public abstract Apartment toEntity(ApartmentDTO dto);
 
     public Apartment toEntityWithRelations(ApartmentDTO dto, PropertyMapper propertyMapper) {
@@ -32,10 +35,8 @@ public abstract class ApartmentMapper {
 
     public ApartmentDTO toDTOWithRelations(Apartment entity, PropertyMapper propertyMapper) {
         ApartmentDTO dto = (ApartmentDTO) propertyMapper.toDto(entity);
-
-        dto.setFloor(dto.getFloor());
-        dto.setBedrooms(dto.getBedrooms());
-
+        dto.setFloor(entity.getFloor());
+        dto.setBedrooms(entity.getBedrooms());
         return dto;
     }
 }

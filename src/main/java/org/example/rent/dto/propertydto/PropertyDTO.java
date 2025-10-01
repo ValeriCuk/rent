@@ -3,16 +3,22 @@ package org.example.rent.dto.propertydto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.example.rent.dto.AddressDTO;
 import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.PhotoDTO;
+import org.example.rent.other.PropertyType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@SuperBuilder
 public abstract class PropertyDTO {
 
     @EqualsAndHashCode.Include
@@ -29,5 +35,22 @@ public abstract class PropertyDTO {
     @NotNull
     private Date date;
     private BuildingDTO building;
-    private List<PhotoDTO> photos;
+    private Set<PhotoDTO> photos;
+    private PropertyType type;
+
+    public String getTypeDisplay(){
+        return type.toString();
+    }
+
+    public String getBedroomsDisplay() {
+        return "--";
+    }
+
+    public String getFloorDisplay() {
+        return "--";
+    }
+
+    public String getFloorsDisplay() {
+        return building == null ? "--" : String.valueOf(building.getFloors());
+    }
 }

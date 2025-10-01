@@ -6,9 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.rent.other.Role;
 
-import javax.management.relation.Role;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

@@ -1,0 +1,67 @@
+<link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center ms-5 me-5 mt-4 mb-2">
+        <h1 class="fs-4 mb-0">Перегляд об'єкта</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/properties}">Об'єкти</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Перегляд</li>
+            </ol>
+        </nav>
+    </div>
+    <hr class=" mb-4">
+
+    <!-- Таблиця з деталями -->
+    <div class="ms-5 me-5">
+        <table class="table table-bordered">
+            <tbody>
+            <tr>
+                <td class="fw-semibold" style="width: 200px;">ID</td>
+                <td th:text="${property.id}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Тип нерухомості</td>
+                <td>
+                    <span th:switch="${property.typeDisplay}">
+                        <span th:case="'APARTMENT'">Квартира</span>
+                        <span th:case="'HOUSE'">Будинок</span>
+                        <span th:case="'COMMERCIAL'">Комерція</span>
+                        <span th:case="'PLOT'">Ділянка</span>
+                        <span th:case="*"
+                              class="badge bg-dark">Невідомо</span>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Площа(м.кв.)</td>
+                <td th:text="${#numbers.formatDecimal(property.area, 0, 'WHITESPACE', 2, 'POINT')}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Ціна($)</td>
+                <td th:text="${#numbers.formatDecimal(property.totalPrice, 0, 'WHITESPACE', 0, 'POINT')}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Ціна за м.кв.($)</td>
+                <td th:text="${#numbers.formatDecimal(property.pricePerSquareMeter, 0, 'WHITESPACE', 0, 'POINT')}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Кімнат</td>
+                <td th:text="${property.bedroomsDisplay}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Поверх</td>
+                <td th:text="${property.floorDisplay}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Поверховість</td>
+                <td th:text="${property.floorsDisplay}"></td>
+            </tr>
+            <tr>
+                <td class="fw-semibold">Дата</td>
+                <td th:text="${#dates.format(property.date, 'dd.MM.yyyy - HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -7,17 +7,22 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.rent.dto.ViewingRequestDTO;
 import org.example.rent.entity.ViewingRequest;
 import org.example.rent.exceptions.ExcelExportException;
-import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
 import org.example.rent.other.ViewingRequestStatus;
 import org.example.rent.repositories.interfaces.ViewingRequestRepository;
 import org.example.rent.services.mappers.ViewingRequestMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +53,13 @@ public class ViewingRequestService {
         List<ViewingRequest> viewingRequests = viewingRequestRepository.findAll();
         log.info("Get all viewingRequests, size: " + viewingRequests.size());
         return viewingRequests.stream().map(viewingRequestMapper::toDtoWithRelations).collect(Collectors.toList());
+    }
+
+    public Page<ViewingRequestDTO> getPaginatedViewings(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("user.username").ascending() );
+        Page<ViewingRequest> entityPage = viewingRequestRepository.findAll(pageable);
+        log.info("Get all viewingRequests, size: " + entityPage.getTotalPages());
+        return entityPage.map(viewingRequestMapper::toDtoWithRelations);
     }
 
     //save(DTO dto)
@@ -85,35 +97,36 @@ public class ViewingRequestService {
         log.info("Update viewing request with id: " + id);
     }
 
-    //updateStatus(Long id, String status)
+    //updateStatus(Long id)
     @Transactional
-    public void updateStatusViewingRequest(Long id, String status){
-        ViewingRequestStatus newStatus = parseStatus(status);
+    public void updateStatusViewingRequest(Long id){
         ViewingRequest viewingRequest = viewingRequestRepository.findById(id).orElseThrow(() -> new NotFoundException("Viewing Request with id: " + id + " not found"));
-        viewingRequest.setStatus(newStatus);
+        toggleStatus(viewingRequest);
         viewingRequestRepository.save(viewingRequest);
         log.info("Update status of viewing request with id: " + id);
     }
 
-    private ViewingRequestStatus parseStatus(String status){
-        try {
-            return ViewingRequestStatus.valueOf(status.toUpperCase());
-        }catch (IllegalArgumentException e){
-            throw new InvalidStatusException("Invalid viewing request status: " + status);
+    private void toggleStatus(ViewingRequest vr) {
+        if (vr.getStatus() == ViewingRequestStatus.NEW) {
+            vr.setStatus(ViewingRequestStatus.PROCESSED);
+        } else {
+            vr.setStatus(ViewingRequestStatus.NEW);
         }
     }
 
     //exportToExcel()
     public byte[] exportToExcel() {
-        try(XSSFWorkbook workbook = new XSSFWorkbook();
-                ByteArrayOutputStream out = new ByteArrayOutputStream()){
+        try(
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                ByteArrayOutputStream out = new ByteArrayOutputStream()
+        ){
             XSSFSheet sheet = workbook.createSheet("Viewing Requests");
 
             createHeaderRow(sheet);
             fillDataRows(sheet);
 
             workbook.write(out);
-
+            log.info("Export viewing requests to excel in service");
             return out.toByteArray();
         }catch (IOException e){
             throw new ExcelExportException("Помилка при створенні Excel-файлу", e);
@@ -129,6 +142,7 @@ public class ViewingRequestService {
         headerRow.createCell(4).setCellValue("Comments");
         headerRow.createCell(5).setCellValue("Date");
         headerRow.createCell(6).setCellValue("Status");
+        log.info("Header rows created");
     }
 
     private void fillDataRows(XSSFSheet sheet) {
@@ -143,12 +157,37 @@ public class ViewingRequestService {
             row.createCell(3).setCellValue(vr.getUser().getEmail());
             row.createCell(4).setCellValue(vr.getComments());
             //date formater
-            LocalDateTime localDateTime = vr.getDate().toInstant()
+            LocalDateTime localDateTime = Instant.ofEpochMilli(vr.getDate().getTime())
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             row.createCell(5).setCellValue(localDateTime.format(formatter));
             row.createCell(6).setCellValue(vr.getStatus().toString());
         }
+    }
+
+    public Page<ViewingRequestDTO> getFilteredPage(String username, String phone, String email, ViewingRequestStatus status, int page, int size) {
+        Specification<ViewingRequest> spec = (root, query, cb) -> cb.conjunction();
+
+        if (username != null && !username.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("user").get("username")), "%" + username.toLowerCase() + "%"));
+        }
+        if (phone != null && !phone.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("user").get("phone")), "%" + phone.toLowerCase() + "%"));
+        }
+        if (email != null && !email.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("user").get("email")), "%" + email.toLowerCase() + "%"));
+        }
+        if (status != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
+        Page<ViewingRequest> entityPage = viewingRequestRepository.findAll(spec, pageable);
+        log.info("Found " + entityPage.getTotalPages() + " pages");
+        return entityPage.map(viewingRequestMapper::toDtoWithRelations);
     }
 
 }
