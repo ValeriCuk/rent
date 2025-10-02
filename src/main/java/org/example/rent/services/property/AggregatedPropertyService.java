@@ -25,7 +25,9 @@ public class AggregatedPropertyService {
     }
 
     public Page<PropertyDTO> getFilteredPage(Long id, PropertyType type, String bedrooms, int page, int size) {
-        log.debug("getFilteredPage, propertyServices.size -> " + propertyServices.size());
+
+        log.info("getFilteredPage, propertyServices");
+
         List<CompletableFuture<? extends List<? extends PropertyDTO>>> futures = propertyServices.stream()
                 .map(service -> (CompletableFuture<List<PropertyDTO>>) service.getAllAsync())
                 .collect(Collectors.toList());
@@ -37,20 +39,43 @@ public class AggregatedPropertyService {
                 .sorted(Comparator.comparing(PropertyDTO::getId))
                 .collect(Collectors.toList());
 
+        try {
+            System.out.println("type " + type);
+        } catch (NullPointerException e) {
+            System.out.println("exception NullPointerException type");
+        }
+        try {
+            System.out.println("id " + id);
+        } catch (NullPointerException e) {
+            System.out.println("exception NullPointerException id");
+        }
+        try {
+            System.out.println("bedrooms " + bedrooms);
+        } catch (NullPointerException e) {
+            System.out.println("exception NullPointerException bedrooms");
+        }
+
+        log.info(all.size() + " -> Before filtered in AggregatedPropertyService " + all);
+
         List<PropertyDTO> filtered = all.stream()
                 .filter(p -> id == null || p.getId().equals(id))
                 .filter(p -> type == null || p.getTypeDisplay().equals(type.name()))
-                .filter(p -> bedrooms == null || p.getBedroomsDisplay().equals(bedrooms))
+                .filter(p -> bedrooms == null || bedrooms.isBlank() || p.getBedroomsDisplay().equals(bedrooms))
                 .collect(Collectors.toList());
+
+        log.info(filtered.size() + " -> After filtered before pagination in AggregatedPropertyService " + filtered);
 
         int start = page * size;
         int end = Math.min(start + size, filtered.size());
         if (start >= filtered.size()) {
+            log.warn("No more pages in AggregatedPropertyService start >= filtered.size()");
             start = 0;
             end = Math.min(size, filtered.size());
         }
 
         List<PropertyDTO> paginated = filtered.subList(start, end);
+
+        log.info(paginated.size() + " -> After filtered after pagination in AggregatedPropertyService " + paginated);
         return new PageImpl<>(paginated, PageRequest.of(page, size), filtered.size());
     }
 }

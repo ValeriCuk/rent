@@ -5,21 +5,19 @@ import org.example.rent.dto.PhotoDTO;
 import org.example.rent.entity.Photo;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
-import org.example.rent.other.PropertyType;
 import org.example.rent.repositories.interfaces.properties.PropertyRepository;
 import org.example.rent.services.PhotoService;
+import org.example.rent.services.ViewingRequestService;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.example.rent.services.mappers.property.PropertyMapper;
 import org.example.rent.entity.property.Property;
 import org.example.rent.dto.propertydto.PropertyDTO;
-import org.springframework.data.domain.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -31,16 +29,19 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
     protected final PropertyRepository<T> propertyRepository;
     protected final PropertyMapper propertyMapper;
     private final Logger log = CustomLogger.getLog();
+    private final ViewingRequestService viewingRequestService;
 
     protected PropertyService(
             PropertyRepository<T> propertyRepository,
             PropertyMapper propertyMapper,
             PhotoService photoService,
-            PhotoMapper photoMapper) {
+            PhotoMapper photoMapper,
+            ViewingRequestService viewingRequestService) {
         this.propertyRepository = propertyRepository;
         this.propertyMapper = propertyMapper;
         this.photoService = photoService;
         this.photoMapper = photoMapper;
+        this.viewingRequestService = viewingRequestService;
     }
 
     //getById(Long id)
@@ -94,6 +95,7 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
     //deleteAll()
     @Transactional
     public void deleteAll() {
+        viewingRequestService.deleteAll();
         propertyRepository.deleteAll();
         log.info("Delete all property through PropertyService with type: " + propertyRepository.getClass().getName());
     }

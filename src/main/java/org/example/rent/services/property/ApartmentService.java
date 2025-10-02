@@ -4,6 +4,7 @@ import org.example.rent.dto.propertydto.ApartmentDTO;
 import org.example.rent.entity.property.Apartment;
 import org.example.rent.repositories.interfaces.properties.ApartmentRepository;
 import org.example.rent.services.PhotoService;
+import org.example.rent.services.ViewingRequestService;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.example.rent.services.mappers.property.PropertyMapper;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,12 @@ public class ApartmentService extends PropertyService<Apartment, ApartmentDTO> {
     private final ApartmentRepository apartmentRepository;
     private final PropertyMapper propertyMapper;
 
-    public ApartmentService(ApartmentRepository apartmentRepository, PropertyMapper propertyMapper, PhotoService photoService, PhotoMapper photoMapper) {
-        super(apartmentRepository, propertyMapper, photoService, photoMapper);
+    public ApartmentService(ApartmentRepository apartmentRepository,
+                            PropertyMapper propertyMapper,
+                            PhotoService photoService,
+                            PhotoMapper photoMapper,
+                            ViewingRequestService viewingRequestService) {
+        super(apartmentRepository, propertyMapper, photoService, photoMapper,  viewingRequestService);
         this.apartmentRepository = apartmentRepository;
         this.propertyMapper = propertyMapper;
         this.photoService = photoService;

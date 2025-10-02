@@ -12,7 +12,7 @@ import org.example.rent.other.PropertyType;
 @Data
 @NoArgsConstructor
 @SuperBuilder
-public class ApartmentDTO extends PropertyDTO {
+    public class ApartmentDTO extends PropertyDTO {
 
     @NotNull
     @Min(1)

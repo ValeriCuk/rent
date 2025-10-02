@@ -3,8 +3,10 @@ package org.example.rent.services;
 import org.apache.logging.log4j.Logger;
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.dto.ServicesDTO;
+import org.example.rent.dto.ViewingRequestDTO;
 import org.example.rent.entity.Photo;
 import org.example.rent.entity.Services;
+import org.example.rent.entity.ViewingRequest;
 import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
@@ -13,6 +15,11 @@ import org.example.rent.other.ViewingRequestStatus;
 import org.example.rent.repositories.interfaces.ServicesRepository;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.example.rent.services.mappers.ServicesMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +55,24 @@ public class ServicesService {
         List<Services> services = servicesRepository.findAll();
         log.info("Services found with all: " + services.size());
         return services.stream().map(servicesMapper::toDTOWithRelations).collect(Collectors.toList());
+    }
+
+    //getFilteredPages
+    public Page<ServicesDTO> getFilteredPage(String title, ServicesStatus status, int page, int size) {
+        Specification<Services> spec = (root, query, cb) -> cb.conjunction();
+
+        if (title != null && !title.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+        }
+        if (status != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("date").descending());
+        Page<Services> entityPage = servicesRepository.findAll(spec, pageable);
+        log.info("Found " + entityPage.getTotalPages() + " pages");
+        return entityPage.map(servicesMapper::toDTOWithRelations);
     }
 
     //save(DTO dto)
@@ -90,22 +115,21 @@ public class ServicesService {
 
     //updateStatus(Long id, String status)
     @Transactional
-    public void updateStatusServices(Long id, String status) {
-        ServicesStatus newStatus = parseStatus(status);
+    public void updateStatusServices(Long id) {
         Services services = servicesRepository.findById(id).orElseThrow(() -> new NotFoundException("Services with id: " + id + " not found"));
-        services.setStatus(newStatus);
+        toggleStatus(services);
         servicesRepository.save(services);
         log.info("Services status changed with id: " + id);
     }
 
-
-    private ServicesStatus parseStatus(String status){
-        try {
-            return ServicesStatus.valueOf(status.toUpperCase());
-        }catch (IllegalArgumentException e){
-            throw new InvalidStatusException("Invalid services status: " + status);
+    private void toggleStatus(Services ser) {
+        if (ser.getStatus() == ServicesStatus.SHOW) {
+            ser.setStatus(ServicesStatus.HIDE);
+        } else {
+            ser.setStatus(ServicesStatus.SHOW);
         }
     }
+
     //update(Long id, DTO dto)
     @Transactional
     public void update(Long id, ServicesDTO dto) {

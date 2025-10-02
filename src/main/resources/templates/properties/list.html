@@ -15,9 +15,11 @@
 
     <!-- Кнопка очистити -->
     <div class="d-flex justify-content-end align-items-center ms-5 mb-2 me-5 border rounded px-3 py-2 bg-light">
-        <a th:href="@{/properties/deleteAll}" class="btn btn-secondary btn-sm">
-            <i class="fas fa-trash me-1"></i> Очистити
-        </a>
+        <form th:action="@{/properties/deleteAll}" method="post">
+            <button type="submit" class="btn btn-secondary btn-sm">
+                <i class="fas fa-trash me-1"></i> Очистити
+            </button>
+        </form>
     </div>
 
     <!-- Table-titles -->
@@ -74,7 +76,7 @@
                 </thead>
                 <!-- Таблиця -->
                 <tbody>
-                <tr th:each="p : ${properties}">
+                <tr th:each="p : ${properties}" th:onclick="'window.location.href=\'/properties/' + ${p.id} + '\';'" style="cursor:pointer;">
                     <td th:text="${p.id}"></td>
                     <td>
                     <span th:switch="${p.typeDisplay}">
@@ -129,7 +131,7 @@
                           id=${id},
                           type=${type},
                           bedrooms=${bedrooms})}">
-                    «
+                    »
                 </a>
 
             </li>

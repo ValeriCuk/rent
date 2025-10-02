@@ -8,17 +8,13 @@ import org.example.rent.other.CustomLogger;
 import org.example.rent.other.PropertyType;
 import org.example.rent.services.property.*;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/properties")
@@ -45,6 +41,7 @@ public class PropertyController {
         this.propertyServices = List.of(apartmentService, commercialService, houseService, plotsService);
         this.aggregatedPropertyService = aggregatedPropertyService;
     }
+
     @GetMapping
     public String listProperties(@RequestParam(required = false) Long id,
                                  @RequestParam(required = false) PropertyType type,
@@ -52,7 +49,7 @@ public class PropertyController {
                                  @RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "5") int size,
                                  Model model) {
-
+        log.info("Testing type: " + type);
         Page<PropertyDTO> propertiesPage = aggregatedPropertyService.getFilteredPage(id, type, bedrooms, page, size);
 
         model.addAttribute("properties", propertiesPage);
@@ -70,6 +67,7 @@ public class PropertyController {
 
     @GetMapping("/{id}")
     public String getById(@PathVariable Long id, Model model) {
+        log.info("Getting property through controller with id: " + id);
         PropertyDTO dto = null;
         for (PropertyService<? extends Property, ? extends PropertyDTO> service : propertyServices) {
             try {
@@ -86,6 +84,7 @@ public class PropertyController {
 
     @PostMapping("/deleteAll")
     public String deleteAll() {
+        log.info("Deleting all properties");
         propertyServices.forEach(PropertyService::deleteAll);
         return "redirect:/properties";
     }

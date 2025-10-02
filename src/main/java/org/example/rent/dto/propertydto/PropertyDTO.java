@@ -12,7 +12,6 @@ import org.example.rent.other.PropertyType;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
 import java.util.Set;
 
 @Data
