@@ -5,7 +5,7 @@ import lombok.*;
 import org.example.rent.entity.property.Property;
 import org.example.rent.other.ViewingRequestStatus;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -21,7 +21,7 @@ public class ViewingRequest {
 
     private String comments;
     private ViewingRequestStatus status;
-    private Date date;
+    private LocalDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

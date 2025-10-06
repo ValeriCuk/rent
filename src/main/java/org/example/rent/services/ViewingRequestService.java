@@ -157,9 +157,7 @@ public class ViewingRequestService {
             row.createCell(3).setCellValue(vr.getUser().getEmail());
             row.createCell(4).setCellValue(vr.getComments());
             //date formater
-            LocalDateTime localDateTime = Instant.ofEpochMilli(vr.getDate().getTime())
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
+            LocalDateTime localDateTime = vr.getDate();
             row.createCell(5).setCellValue(localDateTime.format(formatter));
             row.createCell(6).setCellValue(vr.getStatus().toString());
         }

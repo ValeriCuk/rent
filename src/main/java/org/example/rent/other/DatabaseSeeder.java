@@ -9,8 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +70,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
                     Services s = new Services();
                     s.setTitle("Послуга " + i);
                     s.setDescription("Опис послуги " + i);
-                    s.setDate(Date.valueOf(LocalDate.now()));
+                    s.setDate(LocalDateTime.now());
                     s.setStatus(ServicesStatus.SHOW);
                     return s;
                 }).toList();
@@ -85,7 +84,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         apt.setArea(BigDecimal.valueOf(55));
         apt.setPricePerSquareMeter(BigDecimal.valueOf(1000));
         apt.setTotalPrice(BigDecimal.valueOf(55000));
-        apt.setDate(Date.valueOf(LocalDate.now()));
+        apt.setDate(LocalDateTime.now());
         apt.setAddress(addresses.get(0));
         apt.setBuilding(buildings.get(0));
         apt.setBedrooms(2);
@@ -97,7 +96,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         apt2.setArea(BigDecimal.valueOf(55));
         apt2.setPricePerSquareMeter(BigDecimal.valueOf(1000));
         apt2.setTotalPrice(BigDecimal.valueOf(55000));
-        apt2.setDate(Date.valueOf(LocalDate.now()));
+        apt2.setDate(LocalDateTime.now());
         apt2.setAddress(addresses.get(1));
         apt2.setBuilding(buildings.get(0));
         apt2.setBedrooms(2);
@@ -109,7 +108,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         apt3.setArea(BigDecimal.valueOf(55));
         apt3.setPricePerSquareMeter(BigDecimal.valueOf(1000));
         apt3.setTotalPrice(BigDecimal.valueOf(55000));
-        apt3.setDate(Date.valueOf(LocalDate.now()));
+        apt3.setDate(LocalDateTime.now());
         apt3.setAddress(addresses.get(2));
         apt3.setBuilding(buildings.get(0));
         apt3.setBedrooms(2);
@@ -121,7 +120,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         house.setArea(BigDecimal.valueOf(120));
         house.setPricePerSquareMeter(BigDecimal.valueOf(800));
         house.setTotalPrice(BigDecimal.valueOf(96000));
-        house.setDate(Date.valueOf(LocalDate.now()));
+        house.setDate(LocalDateTime.now());
         house.setAddress(addresses.get(3));
         house.setBuilding(buildings.get(1));
         house.setBedrooms(4);
@@ -134,7 +133,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         house2.setArea(BigDecimal.valueOf(120));
         house2.setPricePerSquareMeter(BigDecimal.valueOf(800));
         house2.setTotalPrice(BigDecimal.valueOf(96000));
-        house2.setDate(Date.valueOf(LocalDate.now()));
+        house2.setDate(LocalDateTime.now());
         house2.setAddress(addresses.get(4));
         house2.setBedrooms(4);
         house2.setFloors(2);
@@ -146,7 +145,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         com.setArea(BigDecimal.valueOf(200));
         com.setPricePerSquareMeter(BigDecimal.valueOf(1500));
         com.setTotalPrice(BigDecimal.valueOf(300000));
-        com.setDate(Date.valueOf(LocalDate.now()));
+        com.setDate(LocalDateTime.now());
         com.setAddress(addresses.get(5));
         com.setBuilding(buildings.get(2));
         com.setFloor(1);
@@ -157,7 +156,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         com2.setArea(BigDecimal.valueOf(200));
         com2.setPricePerSquareMeter(BigDecimal.valueOf(1500));
         com2.setTotalPrice(BigDecimal.valueOf(300000));
-        com2.setDate(Date.valueOf(LocalDate.now()));
+        com2.setDate(LocalDateTime.now());
         com2.setAddress(addresses.get(6));
         com2.setBuilding(buildings.get(2));
         com2.setFloor(1);
@@ -168,7 +167,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         com3.setArea(BigDecimal.valueOf(200));
         com3.setPricePerSquareMeter(BigDecimal.valueOf(1500));
         com3.setTotalPrice(BigDecimal.valueOf(300000));
-        com3.setDate(Date.valueOf(LocalDate.now()));
+        com3.setDate(LocalDateTime.now());
         com3.setAddress(addresses.get(7));
         com3.setBuilding(buildings.get(2));
         com3.setFloor(1);
@@ -179,7 +178,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
         plot.setArea(BigDecimal.valueOf(500));
         plot.setPricePerSquareMeter(BigDecimal.valueOf(100));
         plot.setTotalPrice(BigDecimal.valueOf(50000));
-        plot.setDate(Date.valueOf(LocalDate.now()));
+        plot.setDate(LocalDateTime.now());
         plot.setAddress(addresses.get(8));
         properties.add(plot);
 
@@ -191,7 +190,7 @@ public class DatabaseSeeder  implements CommandLineRunner {
                     ViewingRequest vr = new ViewingRequest();
                     vr.setComments("Хочу подивитись об'єкт " + i);
                     vr.setStatus(i % 2 == 0 ? ViewingRequestStatus.NEW : ViewingRequestStatus.PROCESSED);
-                    vr.setDate(Date.valueOf(LocalDate.now()));
+                    vr.setDate(LocalDateTime.now());
                     vr.setUser(users.get(i % users.size()));
                     vr.setProperty(properties.get(i % properties.size()));
                     return vr;

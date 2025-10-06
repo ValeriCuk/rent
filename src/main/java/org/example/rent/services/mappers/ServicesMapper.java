@@ -22,6 +22,7 @@ public abstract class ServicesMapper {
 
     public Services toEntityWithRelations(ServicesDTO dto) {
         Services entity = toEntity(dto);
+        if (dto.getPhotos() == null) return entity;
         if (!dto.getPhotos().isEmpty()) {
             List<Photo> photos = dto.getPhotos().stream()
                     .map(photoMapper::toEntity)

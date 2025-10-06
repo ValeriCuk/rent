@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.rent.other.ServicesStatus;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,7 +21,7 @@ public class Services {
 
     private String title;
     private String description;
-    private Date date;
+    private LocalDateTime date;
     private ServicesStatus status;
 
     @OneToMany(fetch = FetchType.LAZY,

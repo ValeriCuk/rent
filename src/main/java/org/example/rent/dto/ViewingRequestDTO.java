@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.example.rent.dto.propertydto.PropertyDTO;
 import org.example.rent.other.ViewingRequestStatus;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -18,7 +18,7 @@ public class ViewingRequestDTO {
     private Long id;
     private String comments;
     private ViewingRequestStatus status;
-    private Date date;
+    private LocalDateTime date;
     @NotNull
     private UserDTO user;
     @NotNull

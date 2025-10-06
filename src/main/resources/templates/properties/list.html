@@ -94,7 +94,7 @@
                     <td th:text="${p.bedroomsDisplay}"></td>
                     <td th:text="${p.floorDisplay}"></td>
                     <td th:text="${p.floorsDisplay}"></td>
-                    <td th:text="${#dates.format(p.date, 'dd.MM.yyyy - HH:mm')}"></td>
+                    <td th:text="${#temporals.format(p.date, 'dd.MM.yyyy - HH:mm')}"></td>
                 </tr>
                 </tbody>
             </table>

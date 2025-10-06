@@ -68,43 +68,48 @@
                     </td>
                 </tr>
                 </thead>
-                <!-- Таблиця -->
-                <tbody>
-                <tr th:each="s : ${servicesPage.content}">
-                    <td th:text="${s.title}"></td>
-                    <td th:text="${s.description}"></td>
-                    <td th:text="${#dates.format(s.date, 'dd.MM.yyyy - HH:mm')}"></td>
-
-                    <!-- Статус -->
-                    <td class="text-center">
-                        <form th:action="@{'/services/' + ${s.id} + '/status'}" method="post">
-                            <button type="submit" class="badge"
-                                    th:classappend="${s.status.name() == 'SHOW'} ? ' bg-warning' : ' bg-success'"
-                                    style="width: 90px; border:none; cursor:pointer">
-                                <span th:text="${s.status.name() == 'SHOW' ? 'Показати' : 'Приховати'}"></span>
-                            </button>
-                        </form>
-                    </td>
-
-
-                    <td class="text-center">
-                        <!-- Кнопка перегляду -->
-                        <a th:href="@{'/services/' + ${s.id}}" class="btn btn-sm btn-info">
-                            ✏️
-                        </a>
-                        <!-- Кнопка видалення -->
-                        <form th:action="@{'/services/' + ${s.id} + '/delete'}" method="post" style="display:inline;">
-                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                🗑️
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                </tbody>
             </table>
         </div>
     </form>
+
+    <!-- Таблиця -->
+    <div class="table-responsive ms-5 me-5">
+        <table class="table table-bordered table-striped w-100">
+            <tbody>
+            <tr th:each="s : ${servicesPage.content}">
+                <td style="width: 180px" th:text="${s.title}"></td>
+                <td th:text="${s.description}"></td>
+                <td style="width: 150px" th:text="${#temporals.format(s.date, 'dd.MM.yyyy - HH:mm')}"></td>
+
+                <!-- Статус -->
+                <td style="width: 100px" class="text-center">
+                    <form th:action="@{'/services/' + ${s.id} + '/status'}" method="post">
+                        <button type="submit" class="badge"
+                                th:classappend="${s.status.name() == 'SHOW'} ? ' bg-warning' : ' bg-success'"
+                                style="width: 90px; border:none; cursor:pointer">
+                            <span th:text="${s.status.name() == 'SHOW' ? 'Показати' : 'Приховати'}"></span>
+                        </button>
+                    </form>
+                </td>
+
+
+                <td style="width: 100px" class="text-center">
+                    <!-- Кнопка перегляду -->
+                    <a th:href="@{'/services/' + ${s.id} + '/editing'}" class="btn btn-sm btn-info">
+                        ✏️
+                    </a>
+                    <!-- Кнопка видалення -->
+                    <form th:action="@{'/services/' + ${s.id} + '/delete'}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            🗑️
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <!-- Сторінки -->
     <nav aria-label="Page navigation" th:if="${totalPages > 1}">

@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <td class="fw-semibold">Дата</td>
-            <td th:text="${#dates.format(viewing.date, 'dd.MM.yyyy - HH:mm')}"></td>
+            <td th:text="${#temporals.format(viewing.date, 'dd.MM.yyyy - HH:mm')}"></td>
         </tr>
         <tr>
             <td class="fw-semibold">Статус</td>

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.example.rent.other.ServicesStatus;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,7 +17,7 @@ public class ServicesDTO {
     private String title;
     private String description;
     @NotNull
-    private Date date;
+    private LocalDateTime date;
     private List<PhotoDTO> photos;
     private ServicesStatus status;
 }

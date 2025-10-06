@@ -3,7 +3,7 @@ package org.example.rent.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.example.rent.dto.propertydto.PropertyDTO;
+import org.example.rent.other.PhotoType;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -17,4 +17,5 @@ public class PhotoDTO {
     private String format;
     private long size;
     private String url;
+    private PhotoType type;
 }

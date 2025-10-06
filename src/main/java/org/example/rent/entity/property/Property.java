@@ -7,7 +7,7 @@ import org.example.rent.entity.Building;
 import org.example.rent.entity.Photo;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter
@@ -33,7 +33,7 @@ public abstract class Property {
 
     private BigDecimal pricePerSquareMeter;
     private BigDecimal totalPrice;
-    private Date date;
+    private LocalDateTime date;
 
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)

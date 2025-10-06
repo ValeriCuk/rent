@@ -1,6 +1,7 @@
 package org.example.rent.controllers;
 
 import org.example.rent.exceptions.ExcelExportException;
+import org.example.rent.exceptions.FileSavingException;
 import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExcelExportException.class)
     public ResponseEntity<String> handleExcelExport(ExcelExportException ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(FileSavingException.class)
+    public ResponseEntity<String> handleFileSaving(FileSavingException ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ex.getMessage());

@@ -11,7 +11,7 @@ import org.example.rent.dto.PhotoDTO;
 import org.example.rent.other.PropertyType;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Data
@@ -32,7 +32,7 @@ public abstract class PropertyDTO {
     @NotNull
     private BigDecimal totalPrice;
     @NotNull
-    private Date date;
+    private LocalDateTime date;
     private BuildingDTO building;
     private Set<PhotoDTO> photos;
     private PropertyType type;

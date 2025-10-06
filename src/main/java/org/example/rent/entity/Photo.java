@@ -2,7 +2,7 @@ package org.example.rent.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.rent.entity.property.Property;
+import org.example.rent.other.PhotoType;
 
 @Entity
 @Getter
@@ -20,4 +20,5 @@ public class Photo {
     private String format;
     private long size;
     private String url;
+    private PhotoType type;
 }

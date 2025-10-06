@@ -36,6 +36,7 @@ public class ServicesController {
                                @RequestParam(defaultValue = "5") int size,
                                Model model) {
 
+        log.info("listServices get, title: " + title + ", status: " + status);
         Page<ServicesDTO> servicesPage = servicesService.getFilteredPage(title, status, page, size);
 
         model.addAttribute("servicesPage", servicesPage);
@@ -56,21 +57,21 @@ public class ServicesController {
         return "layouts/base";
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/editing")
     public String getById(@PathVariable Long id, Model model) {
         model.addAttribute("contentTemplate", "services/card");
         model.addAttribute("contentFragment", "content");
         ServicesDTO servicesDTO = servicesService.findById(id);
-        model.addAttribute("services", servicesDTO);
+        model.addAttribute("service", servicesDTO);
 
         log.info("Getting Services with id " + id);
         return "layouts/base";
     }
 
-    @PostMapping("/create")
+    @PostMapping("/save")
     public String create(ServicesDTO dto, Model model) {
-        servicesService.save(dto);
-        log.info("Service was created");
+        servicesService.update(dto.getId(), dto);
+        log.info("Service was changed");
         return "redirect:/services";
     }
 
@@ -85,8 +86,8 @@ public class ServicesController {
 
     @PostMapping("/{id}/status")
     public String toggleStatus(@PathVariable Long id) {
-        servicesService.updateStatusServices(id);
         log.info("Services Controller toggleStatus with id: " + id);
+        servicesService.updateStatusServices(id);
         return "redirect:/services";
     }
 
