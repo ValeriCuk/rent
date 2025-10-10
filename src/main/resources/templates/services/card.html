@@ -84,7 +84,8 @@
                                    id="name"
                                    name="title"
                                    th:value="${service.title}"
-                                   placeholder="Введіть назву послуги">
+                                   placeholder="Введіть назву послуги"
+                                   required>
                             <!-- Статус -->
                             <div class="input-group-text">
                                 <input class="form-check-input mt-0"
@@ -107,7 +108,8 @@
                                   name="description"
                                   rows="4"
                                   th:text="${service.description}"
-                                  placeholder="Введіть опис послуги">
+                                  placeholder="Введіть опис послуги"
+                                  required>
                         </textarea>
                     </div>
 

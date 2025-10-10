@@ -27,7 +27,7 @@ public abstract class ServicesMapper {
 
     public Services toEntityWithRelations(ServicesDTO dto) {
         Services entity = toEntity(dto);
-        log.info("toEntityWithRelations -> dto: " + dto.getId());
+        log.info("toEntityWithRelations -> dto: " + dto);
         if (!dto.getPhotos().isEmpty()) {
             log.info("photo mapped in services: " + dto.getPhotos());
             List<Photo> photos = dto.getPhotos().stream()

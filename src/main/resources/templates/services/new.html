@@ -52,18 +52,19 @@
                                    class="form-control"
                                    id="name"
                                    name="title"
-                                   th:value="${service.title}"
-                                   placeholder="Введіть назву послуги">
+                                   placeholder="Введіть назву послуги"
+                                   required
+                                   oninvalid="this.setCustomValidity('Будь ласка, введіть назву послуги')"
+                                   oninput="this.setCustomValidity('')">
                             <!-- Статус -->
                             <div class="input-group-text">
                                 <input class="form-check-input mt-0"
                                        type="checkbox"
                                        id="visible"
-                                       th:checked="${service.status.name() == 'SHOW'}"
+                                       checked
                                        onchange="document.getElementById('visibleStatus').value = this.checked ? 'SHOW' : 'HIDE'">
                                 <label for="visible" class="ms-2 mb-0">Відображати</label>
-                                <input type="hidden" name="status" id="visibleStatus"
-                                       th:value="${service.status.name()}">
+                                <input type="hidden" name="status" id="visibleStatus" value="SHOW">
                             </div>
                         </div>
                     </div>
@@ -75,15 +76,16 @@
                                   id="description"
                                   name="description"
                                   rows="4"
-                                  th:text="${service.description}"
-                                  placeholder="Введіть опис послуги">
-                        </textarea>
+                                  placeholder="Введіть опис послуги"
+                                  required
+                                  oninvalid="this.setCustomValidity('Будь ласка, введіть опис послуги')"
+                                  oninput="this.setCustomValidity('')"></textarea>
                     </div>
 
                     <!-- Кнопки -->
                     <div class="d-flex justify-content-end gap-2">
                         <a th:href="@{/services}" class="btn btn-secondary">Скасувати</a>
-                        <button type="submit" class="btn btn-primary">Зберегти</button>
+                        <button type="submit" class="btn btn-primary">Створти</button>
                     </div>
                 </form>
             </div>

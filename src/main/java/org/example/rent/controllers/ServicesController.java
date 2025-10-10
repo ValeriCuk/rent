@@ -65,8 +65,16 @@ public class ServicesController {
     }
 
     @PostMapping("/save")
-    public String create(ServicesDTO dto, Model model) {
-//        servicesService.updateWithPhoto(dto, bannerId);
+    public String create(ServicesDTO dto, Model model,
+                         @RequestParam(value = "bannerId", required = false) Long bannerId,
+                         @RequestParam(value = "previewId", required = false) Long previewId,
+                         @RequestParam(value = "status") String status) {
+        log.info("Creating Service with status " + status);
+        log.info("Creating Service with status " + ServicesStatus.valueOf(status));
+        dto.setStatus(ServicesStatus.valueOf(status));
+        ServicesDTO newServicesDTO = servicesService.create(dto);
+        servicesService.updateWithPhoto(newServicesDTO, bannerId, previewId);
+
         log.info("Service was created");
         return "redirect:/services";
     }

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,16 +34,14 @@ import java.util.stream.Collectors;
 public class ServicesService {
 
     private final PhotoService photoService;
-    private final PhotoMapper photoMapper;
     private final ServicesRepository servicesRepository;
     private final ServicesMapper servicesMapper;
     private final Logger log = CustomLogger.getLog();
 
-    public ServicesService(ServicesRepository servicesRepository, ServicesMapper servicesMapper, PhotoService photoService, PhotoMapper photoMapper) {
+    public ServicesService(ServicesRepository servicesRepository, ServicesMapper servicesMapper, PhotoService photoService) {
         this.servicesRepository = servicesRepository;
         this.servicesMapper = servicesMapper;
         this.photoService = photoService;
-        this.photoMapper = photoMapper;
     }
 
     //getById(Long id)
@@ -79,16 +78,22 @@ public class ServicesService {
 
     //save(DTO dto)
     @Transactional
-    public void save(ServicesDTO dto) {
+    public Long save(ServicesDTO dto) {
         Services entity = servicesMapper.toEntityWithRelations(dto);
         servicesRepository.save(entity);
-        log.info("Services saved with id: " + entity.getId());
+        log.info("Services saved : " + entity.getId());
+        return entity.getId();
     }
 
-    //create(Services DTO dto)
+    //create(dto, )
     @Transactional
-    public void create(ServicesDTO dto) {
-
+    public ServicesDTO create(ServicesDTO dto) {
+        Long id = save(dto);
+        dto.setId(id);
+        dto.setDate(LocalDateTime.now());
+        log.info("Services created with status: " + dto.getStatus());
+        log.info("Services created with id: " + id);
+        return dto;
     }
 
     //deleteAll()
