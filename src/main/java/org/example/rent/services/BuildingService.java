@@ -1,6 +1,7 @@
 package org.example.rent.services;
 
 import org.apache.logging.log4j.Logger;
+import org.example.rent.dto.AddressDTO;
 import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.entity.Building;
@@ -13,6 +14,11 @@ import org.example.rent.other.PhotoType;
 import org.example.rent.repositories.interfaces.BuildingRepository;
 import org.example.rent.services.mappers.BuildingMapper;
 import org.example.rent.services.mappers.PhotoMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,6 +58,27 @@ public class BuildingService {
         List<Building> buildings = buildingRepository.findAll();
         log.info("Get all buildings");
         return buildings.stream().map(buildingMapper::toDtoWithRelations).collect(Collectors.toList());
+    }
+
+    //getFilteredPages
+    public Page<BuildingDTO> getFilteredPage(String title, AddressDTO addressDTO, BuildingStatus status, int page, int size) {
+        Specification<Building> spec = (root, query, cb) -> cb.conjunction();
+
+        if (title != null && !title.isBlank()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+        }
+
+        if (status != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), status));
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+
+        Page<Building> entityPage = buildingRepository.findAll(spec, pageable);
+
+        log.info("Get all buildings");
+        return entityPage.map(buildingMapper::toDtoWithRelations);
     }
 
     //save(DTO dto)

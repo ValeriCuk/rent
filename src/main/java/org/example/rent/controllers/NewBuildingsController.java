@@ -1,28 +1,54 @@
 package org.example.rent.controllers;
 
+import org.apache.logging.log4j.Logger;
+import org.example.rent.dto.AddressDTO;
 import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.PhotoDTO;
+import org.example.rent.other.BuildingStatus;
+import org.example.rent.other.CustomLogger;
+import org.example.rent.other.ServicesStatus;
 import org.example.rent.services.BuildingService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/new-buildings")
 public class NewBuildingsController {
 
     private BuildingService buildingService;
+    private final Logger log = CustomLogger.getLog();
 
     public NewBuildingsController(BuildingService buildingService) {
         this.buildingService = buildingService;
     }
 
     @GetMapping
-    public ResponseEntity<List<BuildingDTO>> getAll() {
-        return ResponseEntity.ok(buildingService.getAll());
+    public String getAll(
+            @RequestParam(required = false) String title,
+            @ModelAttribute AddressDTO address,
+            @RequestParam(required = false) BuildingStatus status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model) {
+        Page<BuildingDTO> buildingPage = buildingService.getFilteredPage(title, address, status, page, size);
+
+        model.addAttribute("buildingPage", buildingPage);
+        model.addAttribute("title", title);
+        model.addAttribute("address", address);
+        model.addAttribute("status", status);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", buildingPage.getTotalPages());
+
+        model.addAttribute("contentTemplate", "buildings/list");
+        model.addAttribute("contentFragment", "content");
+        return "layouts/base";
     }
 
     @GetMapping("/{id}")
