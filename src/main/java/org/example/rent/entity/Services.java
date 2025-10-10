@@ -5,6 +5,7 @@ import lombok.*;
 import org.example.rent.other.ServicesStatus;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,5 +28,5 @@ public class Services {
     @OneToMany(fetch = FetchType.LAZY,
             cascade = CascadeType.REMOVE)
     @JoinColumn(name = "services_id")
-    private List<Photo> photos;
+    private List<Photo> photos = new ArrayList<>();
 }

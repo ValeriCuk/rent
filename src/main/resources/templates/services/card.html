@@ -14,21 +14,67 @@
     <div class="card shadow-sm ms-5 me-5">
         <div class="card-body">
             <div class="container-fluid px-5">
-                <form th:action="@{/services/save}" method="post" enctype="multipart/form-data">
+                <form th:action="@{/services/update}" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" th:value="${service.id}">
                     <input type="hidden" name="date" th:value="${#temporals.format(service.date, 'dd.MM.yyyy - HH:mm')}">
-                    <!-- Банер -->
-                    <div class="mb-4">
-                        <label for="banner" class="form-label">Банер (1920x600)</label>
-                        <input class="form-control" type="file" id="banner" name="banner">
-                    </div>
+                    <input type="hidden" name="bannerId" th:value="${service.bannerPhotoDTO?.id}">
+                    <input type="hidden" name="previewId" th:value="${service.previewPhotoDTO?.id}">
 
-                    <!-- Прев’ю -->
-                    <div class="mb-4">
-                        <label for="preview" class="form-label">Прев’ю (600x350)</label>
-                        <input class="form-control" type="file" id="preview" name="preview">
-                    </div>
+                    <div class="d-flex gap-5 mb-4 align-items-start">
+                        <!-- Банер -->
+                        <div class="d-flex flex-column gap-2">
+                            <label for="preview" class="form-label" style="font-size: 20px; color: #333;">Банер</label>
+                            <div  th:switch="${service.bannerPhotoDTO}">
+                                <div th:case="null">
+                                    <img th:src="@{'/img/proxy-image.png'}" alt="Банер"
+                                         id="bannerImageDefault"
+                                         style="width: 300px; height: 150px;
+                                         object-fit: contain;
+                                         border: 1px solid #ccc; border-radius: 4px;
+                                         background-color: #f8f9fa;"
+                                         class="rounded">
+                                </div>
+                                <div th:case="*">
+                                    <img th:src="@{${service.bannerPhotoDTO.url}}" alt="Банер"
+                                         id="bannerImageReal"
+                                         style="width: 300px; height: 150px;
+                                         object-fit: contain;
+                                         border: 1px solid #ccc; border-radius: 4px;
+                                         background-color: #f8f9fa;"
+                                         class="rounded">
+                                </div>
+                            </div>
+                            <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (1920х800)</label>
+                            <input class="form-control" type="file" id="banner" name="banner">
+                        </div>
 
+                        <!-- Прев’ю -->
+                        <div class="d-flex flex-column gap-2">
+                            <label for="preview" class="form-label" style="font-size: 20px; color: #333;">Превʼю</label>
+                            <div  th:switch="${service.previewPhotoDTO}">
+                                <div th:case="null">
+                                    <img th:src="@{'/img/proxy-image.png'}" alt="Превʼю"
+                                         id="previewImageDefault"
+                                         style="width: 300px; height: 150px;
+                                         object-fit: contain;
+                                         border: 1px solid #ccc; border-radius: 4px;
+                                         background-color: #f8f9fa;"
+                                         class="rounded">
+                                </div>
+                                <div th:case="*">
+                                    <img th:src="@{${service.previewPhotoDTO.url}}" alt="Превʼю"
+                                         id="previewImageReal"
+                                         style="width: 300px; height: 150px;
+                                         object-fit: contain;
+                                         border: 1px solid #ccc; border-radius: 4px;
+                                         background-color: #f8f9fa;"
+                                         class="rounded">
+                                </div>
+                            </div>
+                            <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (500×350)</label>
+                            <input class="form-control" type="file" id="preview" name="preview">
+                        </div>
+                    </div>
                     <!-- Назва -->
                     <div class="mb-4">
                         <label for="name" class="form-label">Назва</label>

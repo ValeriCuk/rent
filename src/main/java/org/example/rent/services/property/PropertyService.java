@@ -5,6 +5,7 @@ import org.example.rent.dto.PhotoDTO;
 import org.example.rent.entity.Photo;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
+import org.example.rent.other.PhotoType;
 import org.example.rent.repositories.interfaces.properties.PropertyRepository;
 import org.example.rent.services.PhotoService;
 import org.example.rent.services.ViewingRequestService;
@@ -83,7 +84,7 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
         T property = propertyRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Property not found"));
 
-        PhotoDTO photoDTO = photoService.store(file);
+        PhotoDTO photoDTO = photoService.store(file, PhotoType.BANNER);
         Photo photoFoSaving = photoMapper.toEntity(photoDTO);
         photoFoSaving.setId(photoDTO.getId());
         property.getPhotos().add(photoFoSaving);

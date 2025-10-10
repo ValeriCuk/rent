@@ -9,6 +9,7 @@ import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.BuildingStatus;
 import org.example.rent.other.CustomLogger;
+import org.example.rent.other.PhotoType;
 import org.example.rent.repositories.interfaces.BuildingRepository;
 import org.example.rent.services.mappers.BuildingMapper;
 import org.example.rent.services.mappers.PhotoMapper;
@@ -67,7 +68,7 @@ public class BuildingService {
         Building building = buildingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Building not found"));
 
-        PhotoDTO photoDTO = photoService.store(file);
+        PhotoDTO photoDTO = photoService.store(file, PhotoType.BANNER);
         Photo photoFoSaving = photoMapper.toEntity(photoDTO);
         photoFoSaving.setId(photoDTO.getId());
         building.getPhotos().add(photoFoSaving);

@@ -7,6 +7,7 @@ import org.example.rent.entity.Photo;
 import org.example.rent.exceptions.FileSavingException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
+import org.example.rent.other.PhotoType;
 import org.example.rent.repositories.interfaces.PhotoRepository;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class PhotoService {
 
-    private final Path rootLocation = Paths.get("src/main/resources/static/uploads/photos");
+    private final Path rootLocation = Paths.get("uploads/photos");
     private final PhotoRepository photoRepository;
     private final PhotoMapper photoMapper;
     private final Logger log = CustomLogger.getLog();
@@ -82,7 +83,7 @@ public class PhotoService {
 
     //savePhotoFile()
     @Transactional
-    public PhotoDTO store(MultipartFile file){
+    public PhotoDTO store(MultipartFile file, PhotoType type){
         try {
             String originalFilename = file.getOriginalFilename();
             String ext = FilenameUtils.getExtension(originalFilename);
@@ -92,16 +93,29 @@ public class PhotoService {
             Files.createDirectories(destination.getParent());
             Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 
-            Photo photo = new Photo();
+            PhotoDTO photo = new PhotoDTO();
             photo.setFileName(fileName);
             photo.setFormat(ext);
             photo.setSize(file.getSize());
             photo.setUrl("/uploads/photos/" + photo.getFileName());
-            PhotoDTO photoDTO = save(photoMapper.toDto(photo));
-            log.info("Save photo with id: " + photoDTO.getId());
-            return photoDTO;
+            photo.setType(type);
+            log.info("Save photo file with url: " + photo.getUrl());
+            return photo;
         }catch (IOException ex){
             throw new FileSavingException("Error storing file: " + ex.getMessage());
+        }
+    }
+
+    public void deletePhotoFile(String filePath) {
+        try {
+            Path path = Paths.get("." + filePath);
+            if (Files.deleteIfExists(path)) {
+                log.info("Delete photo file with path: " + filePath);
+            } else {
+                log.info("Deleted was failed");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Не вдалося видалити файл: " + filePath, e);
         }
     }
 }

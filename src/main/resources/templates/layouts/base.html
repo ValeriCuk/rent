@@ -22,5 +22,42 @@
             </div>
         </div>
         <script src="/adminlte/dist/js/adminlte.js"></script>
+
+        <script>
+            const bannerImg = document.getElementById('bannerImageReal') || document.getElementById('bannerImageDefault');
+
+            document.getElementById('banner').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        bannerImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    bannerImg.src = '/img/proxy-image.png';
+                }
+            });
+        </script>
+
+        <script>
+            const previewImg = document.getElementById('previewImageReal') || document.getElementById('previewImageDefault');
+
+            document.getElementById('preview').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.src = '/img/proxy-image.png';
+                }
+            });
+        </script>
+
     </body>
 </html>

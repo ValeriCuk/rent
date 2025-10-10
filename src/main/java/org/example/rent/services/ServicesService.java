@@ -10,6 +10,7 @@ import org.example.rent.entity.ViewingRequest;
 import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.CustomLogger;
+import org.example.rent.other.PhotoType;
 import org.example.rent.other.ServicesStatus;
 import org.example.rent.other.ViewingRequestStatus;
 import org.example.rent.repositories.interfaces.ServicesRepository;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,18 +85,10 @@ public class ServicesService {
         log.info("Services saved with id: " + entity.getId());
     }
 
-    //savePhoto
+    //create(Services DTO dto)
     @Transactional
-    public PhotoDTO savePhotoServices(Long id, MultipartFile file) {
-        Services services = servicesRepository.findById(id).orElseThrow(() -> new NotFoundException("Services with id: " + id + " not found"));
+    public void create(ServicesDTO dto) {
 
-        PhotoDTO photoDTO = photoService.store(file);
-        Photo photoFoSaving = photoMapper.toEntity(photoDTO);
-        photoFoSaving.setId(photoDTO.getId());
-        services.getPhotos().add(photoFoSaving);
-
-        servicesRepository.save(services);
-        return photoDTO;
     }
 
     //deleteAll()
@@ -130,14 +124,47 @@ public class ServicesService {
         }
     }
 
-    //update(Long id, DTO dto)
     @Transactional
-    public void update(Long id, ServicesDTO dto) {
-        if (!servicesRepository.existsById(id))
-            throw new NotFoundException("Services with id: " + id + " not found");
-        Services services = servicesMapper.toEntityWithRelations(dto);
-        services.setId(id);
-        servicesRepository.save(services);
-        log.info("Services saved with id: " + id);
+    public void updateWithPhoto(ServicesDTO dto, Long bannerId, Long previewId) {
+
+        if (!servicesRepository.existsById(dto.getId()))
+            throw new NotFoundException("Services with id: " + dto.getId() + " not found");
+
+        log.info("Updating photo with banner file: " + dto.getBanner());
+        PhotoDTO bannerDTO = updatePhoto(dto.getBanner(), bannerId, PhotoType.BANNER);
+
+        log.info("Updating photo with preview file: " + dto.getPreview());
+        PhotoDTO previewDTO = updatePhoto(dto.getPreview(), previewId, PhotoType.PREVIEW);
+
+        log.info("Banner DTO " + bannerDTO);
+        log.info("Preview DTO " + previewDTO);
+
+        if (bannerDTO != null)
+            dto.getPhotos().add(bannerDTO);
+
+        if (previewDTO != null)
+            dto.getPhotos().add(previewDTO);
+
+        Services entity = servicesMapper.toEntityWithRelations(dto);
+        entity.setId(dto.getId());
+        servicesRepository.save(entity);
+        log.info("Services update with id: " + entity.getId());
+    }
+
+    private PhotoDTO updatePhoto(MultipartFile file, Long id, PhotoType photoType) {
+        if (!file.isEmpty()) {
+            PhotoDTO photoDTO = photoService.store(file, photoType);
+            if (id != null){
+                log.info("Updating " + photoType + " photo with id: " + id);
+                PhotoDTO oldVersion = photoService.getById(id);
+                photoService.deletePhotoFile(oldVersion.getUrl());
+                photoService.update(id, photoDTO);
+                return photoService.getById(id);
+            }else {
+                log.info("Saving " + photoType + " with id: " + id);
+                return photoService.save(photoDTO);
+            }
+        }
+        return id == null ? null : photoService.getById(id);
     }
 }

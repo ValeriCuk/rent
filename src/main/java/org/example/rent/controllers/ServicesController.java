@@ -1,22 +1,14 @@
 package org.example.rent.controllers;
 
 import org.apache.logging.log4j.Logger;
-import org.example.rent.dto.PhotoDTO;
 import org.example.rent.dto.ServicesDTO;
-import org.example.rent.dto.ViewingRequestDTO;
 import org.example.rent.other.CustomLogger;
 import org.example.rent.other.ServicesStatus;
-import org.example.rent.other.ViewingRequestStatus;
 import org.example.rent.services.ServicesService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/services")
@@ -62,6 +54,10 @@ public class ServicesController {
         model.addAttribute("contentTemplate", "services/card");
         model.addAttribute("contentFragment", "content");
         ServicesDTO servicesDTO = servicesService.findById(id);
+        log.info("PHOTO size " +  servicesDTO.getPhotos().size());
+        log.info("Banner DTO " + servicesDTO.getBannerPhotoDTO());
+        log.info("Preview DTO " + servicesDTO.getPreviewPhotoDTO());
+
         model.addAttribute("service", servicesDTO);
 
         log.info("Getting Services with id " + id);
@@ -70,18 +66,18 @@ public class ServicesController {
 
     @PostMapping("/save")
     public String create(ServicesDTO dto, Model model) {
-        servicesService.update(dto.getId(), dto);
-        log.info("Service was changed");
+//        servicesService.updateWithPhoto(dto, bannerId);
+        log.info("Service was created");
         return "redirect:/services";
     }
 
-    @PostMapping("/{id}/photos")
-    public ResponseEntity<PhotoDTO> uploadPhoto(
-            @PathVariable Long id,
-            @RequestParam("file") MultipartFile file
-    ) {
-        PhotoDTO dto = servicesService.savePhotoServices(id, file);
-        return ResponseEntity.ok(dto);
+    @PostMapping("/update")
+    public String update(ServicesDTO dto, Model model,
+                         @RequestParam(value = "bannerId", required = false) Long bannerId,
+                         @RequestParam(value = "previewId", required = false) Long previewId) {
+        servicesService.updateWithPhoto(dto, bannerId, previewId);
+        log.info("Service was changed");
+        return "redirect:/services";
     }
 
     @PostMapping("/{id}/status")

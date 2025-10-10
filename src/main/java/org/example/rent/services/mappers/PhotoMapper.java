@@ -6,10 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface PhotoMapper {
+public abstract class  PhotoMapper {
 
     @Mapping(target = "id", ignore = true)
-    Photo toEntity(PhotoDTO dto);
+    public abstract Photo toEntity(PhotoDTO dto);
 
-    PhotoDTO toDto(Photo photo);
+    public Photo toEntityWithRelations(PhotoDTO dto){
+        Photo entity = toEntity(dto);
+        if (dto.getId() != null) entity.setId(dto.getId());
+        return entity;
+    }
+
+    public abstract PhotoDTO toDto(Photo photo);
 }
