@@ -6,7 +6,7 @@ import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.other.BuildingStatus;
 import org.example.rent.other.CustomLogger;
-import org.example.rent.other.ServicesStatus;
+import org.example.rent.other.PhotoType;
 import org.example.rent.services.BuildingService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,13 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/new-buildings")
 public class NewBuildingsController {
 
-    private BuildingService buildingService;
+    private final BuildingService buildingService;
     private final Logger log = CustomLogger.getLog();
 
     public NewBuildingsController(BuildingService buildingService) {
@@ -51,34 +49,42 @@ public class NewBuildingsController {
         return "layouts/base";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<BuildingDTO> getById(@PathVariable Long id) {
+    @GetMapping("/{id}/editing")
+    public String getById(@PathVariable Long id, Model model) {
         BuildingDTO buildingDTO = buildingService.getById(id);
-        return ResponseEntity.ok(buildingDTO);
+        String bannerURL = buildingService.getURLPhoto(buildingDTO, PhotoType.BANNER);
+
+        model.addAttribute("contentTemplate", "buildings/card");
+        model.addAttribute("contentFragment", "content");
+        model.addAttribute("building", buildingDTO);
+        model.addAttribute("banner", bannerURL);
+        model.addAttribute("activeTab", "main");
+
+        return "layouts/base";
     }
 
-    @PostMapping
-    public ResponseEntity<BuildingDTO> create(@RequestBody BuildingDTO buildingDTO) {
-        buildingService.save(buildingDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
+//    @PostMapping
+//    public ResponseEntity<BuildingDTO> create(@RequestBody BuildingDTO buildingDTO) {
+//        buildingService.save(buildingDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).build();
+//    }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deleteAll() {
+    @PostMapping("/delete")
+    public String deleteAll() {
         buildingService.deleteAll();
-        return ResponseEntity.noContent().build();
+        return "redirect:/new-buildings";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+    @PostMapping("/{id}/delete")
+    public String deleteById(@PathVariable Long id) {
         buildingService.delete(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/new-buildings";
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<Void>  updateStatus(@PathVariable Long id, @RequestBody String status) {
-        buildingService.updateStatusBuilding(id, status);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/{id}/status")
+    public String updateStatus(@PathVariable Long id) {
+        buildingService.updateStatusBuilding(id);
+        return "redirect:/new-buildings";
     }
 
     @PostMapping("/{id}/photos")

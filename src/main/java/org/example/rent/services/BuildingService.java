@@ -6,12 +6,16 @@ import org.example.rent.dto.BuildingDTO;
 import org.example.rent.dto.PhotoDTO;
 import org.example.rent.entity.Building;
 import org.example.rent.entity.Photo;
+import org.example.rent.entity.Services;
 import org.example.rent.exceptions.InvalidStatusException;
 import org.example.rent.exceptions.NotFoundException;
 import org.example.rent.other.BuildingStatus;
 import org.example.rent.other.CustomLogger;
 import org.example.rent.other.PhotoType;
+import org.example.rent.other.ServicesStatus;
 import org.example.rent.repositories.interfaces.BuildingRepository;
+import org.example.rent.repositories.interfaces.ViewingRequestRepository;
+import org.example.rent.repositories.interfaces.properties.PropertyRepository;
 import org.example.rent.services.mappers.BuildingMapper;
 import org.example.rent.services.mappers.PhotoMapper;
 import org.springframework.data.domain.Page;
@@ -33,17 +37,23 @@ public class BuildingService {
     private final PhotoMapper photoMapper;
     private final BuildingRepository buildingRepository;
     private final BuildingMapper buildingMapper;
+    private final PropertyRepository propertyRepository;
     private final Logger log = CustomLogger.getLog();
+    private final ViewingRequestRepository viewingRequestRepository;
 
     public BuildingService(
             BuildingRepository buildingRepository,
             BuildingMapper buildingMapper,
             PhotoService photoService,
-            PhotoMapper photoMapper) {
+            PhotoMapper photoMapper,
+            PropertyRepository propertyRepository,
+            ViewingRequestRepository viewingRequestRepository) {
         this.buildingRepository = buildingRepository;
         this.buildingMapper = buildingMapper;
         this.photoService = photoService;
         this.photoMapper = photoMapper;
+        this.propertyRepository = propertyRepository;
+        this.viewingRequestRepository = viewingRequestRepository;
     }
 
     //getById(Long id)
@@ -51,6 +61,14 @@ public class BuildingService {
         Building building = buildingRepository.findById(id).orElseThrow(() -> new NotFoundException("Building with id " + id + " not found"));
         log.info("Get building with id: " + id);
         return buildingMapper.toDtoWithRelations(building);
+    }
+
+    public String getURLPhoto(BuildingDTO dto, PhotoType type){
+        return dto.getPhotos().stream()
+                .filter(photo -> photo.getType() == type)
+                .map(Photo::getUrl)
+                .findFirst()
+                .orElse(null);
     }
 
     //getAll()
@@ -107,6 +125,8 @@ public class BuildingService {
     //deleteAll()
     @Transactional
     public void deleteAll(){
+        viewingRequestRepository.deleteAllByPropertyBuildingIsNotNull();
+        propertyRepository.deleteByBuildingIsNotNull();
         buildingRepository.deleteAll();
         log.info("Delete all buildings");
     }
@@ -116,25 +136,26 @@ public class BuildingService {
     public void delete(Long id) {
         if (!buildingRepository.existsById(id))
             throw new NotFoundException("Building with id " + id + " not found");
+        viewingRequestRepository.deleteByPropertyBuildingId(id);
+        propertyRepository.deleteByBuildingId(id);
         buildingRepository.deleteById(id);
         log.info("Delete building with id: " + id);
     }
 
     //updateStatus(Long id, BuildingStatus status)
     @Transactional
-    public void updateStatusBuilding(Long id, String status){
-        BuildingStatus newStatus = parseStatus(status);
+    public void updateStatusBuilding(Long id){
         Building building = buildingRepository.findById(id).orElseThrow(() -> new NotFoundException("Building with id " + id + " not found"));
-        building.setStatus(newStatus);
+        toggleStatus(building);
         buildingRepository.save(building);
         log.info("Update status of building with id: " + id);
     }
 
-    private BuildingStatus parseStatus(String status){
-        try {
-            return BuildingStatus.valueOf(status.toUpperCase());
-        }catch (IllegalArgumentException e){
-            throw new InvalidStatusException("Invalid building status: " + status);
+    private void toggleStatus(Building building) {
+        if (building.getStatus() == BuildingStatus.ACTIVE) {
+            building.setStatus(BuildingStatus.INACTIVE);
+        } else {
+            building.setStatus(BuildingStatus.ACTIVE);
         }
     }
 

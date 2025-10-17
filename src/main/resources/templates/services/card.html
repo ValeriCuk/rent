@@ -23,7 +23,7 @@
                     <div class="d-flex gap-5 mb-4 align-items-start">
                         <!-- Банер -->
                         <div class="d-flex flex-column gap-2">
-                            <label for="preview" class="form-label" style="font-size: 20px; color: #333;">Банер</label>
+                            <label for="banner" class="form-label" style="font-size: 20px; color: #333;">Банер</label>
                             <div  th:switch="${service.bannerPhotoDTO}">
                                 <div th:case="null">
                                     <img th:src="@{'/img/proxy-image.png'}" alt="Банер"

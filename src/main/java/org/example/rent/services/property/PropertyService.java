@@ -109,6 +109,12 @@ public abstract class PropertyService<T extends Property, D extends PropertyDTO>
         log.info("Delete property through PropertyService with id: " + id + ", type: " + property.getClass());
     }
 
+    //deleteWithBuilding(Long buildingId)
+    public void deleteWithBuilding(Long buildingId) {
+        propertyRepository.deleteByBuildingId(buildingId);
+        log.info("Delete property through PropertyService with building id: " + buildingId);
+    }
+
     //update(Long id, DTO dto)
     @Transactional
     public void update(Long id, D dto) {

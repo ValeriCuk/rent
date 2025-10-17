@@ -54,13 +54,7 @@ public class ServicesController {
         model.addAttribute("contentTemplate", "services/card");
         model.addAttribute("contentFragment", "content");
         ServicesDTO servicesDTO = servicesService.findById(id);
-        log.info("PHOTO size " +  servicesDTO.getPhotos().size());
-        log.info("Banner DTO " + servicesDTO.getBannerPhotoDTO());
-        log.info("Preview DTO " + servicesDTO.getPreviewPhotoDTO());
-
         model.addAttribute("service", servicesDTO);
-
-        log.info("Getting Services with id " + id);
         return "layouts/base";
     }
 
@@ -98,7 +92,6 @@ public class ServicesController {
     @PostMapping("/delete")
     public String deleteAll() {
         servicesService.deleteAll();
-        log.info("Services delete all");
         return "redirect:/services";
     }
 
@@ -108,5 +101,4 @@ public class ServicesController {
         log.info("Services delete with id: " + id);
         return "redirect:/services";
     }
-
 }

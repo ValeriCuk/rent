@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center ms-5 me-5 mt-4 mb-2">
+        <h1 class="fs-4 mb-0">Редагування новобудови</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a th:href="@{/}">Головна</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/new-buildings}">Новобудови</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Редагування новобудови</li>
+            </ol>
+        </nav>
+    </div>
+    <hr class=" mb-4">
+
+    <div class="card ms-5 me-5">
+        <div class="card-header">
+            <div th:replace="~{buildings/tabs :: tabs('main')}"></div>
+        </div>
+        <div class="card-body">
+            <div th:switch="${activeTab}">
+                <div th:case="'main'" th:replace="~{buildings/tab-main :: content}"></div>
+                <div th:case="'project'" th:replace="~{buildings/tab-project :: content}"></div>
+                <div th:case="'location'" th:replace="~{buildings/tab-location :: content}"></div>
+                <div th:case="'infra'" th:replace="~{buildings/tab-infra :: content}"></div>
+                <div th:case="'apartments'" th:replace="~{buildings/tab-apartments :: content}"></div>
+                <div th:case="'panorama'" th:replace="~{buildings/tab-panorama :: content}"></div>
+                <div th:case="'specification'" th:replace="~{buildings/tab-specification :: content}"></div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,4 +12,8 @@ public interface PropertyRepository<T extends Property> extends JpaRepository<T,
     @NonNull
     @EntityGraph(attributePaths = {"address", "building", "building.photos", "building.address", "photos"})
     List<T> findAll();
+
+    void deleteByBuildingId(Long buildingId);
+    void deleteByBuildingIsNotNull();
+
 }

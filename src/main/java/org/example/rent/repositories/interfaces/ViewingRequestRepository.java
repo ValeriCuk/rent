@@ -6,4 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface ViewingRequestRepository extends JpaRepository<ViewingRequest, Long>,
         JpaSpecificationExecutor<ViewingRequest> {
+    void deleteByPropertyBuildingId(Long buildingId);
+    void deleteAllByPropertyBuildingIsNotNull();
+
 }
