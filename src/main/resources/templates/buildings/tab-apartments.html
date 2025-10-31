@@ -1,3 +1,58 @@
 <div th:fragment="content">
-    <!-- Контент вкладки "Проєкт" -->
+    <div class="d-flex gap-4 ms-3">
+        <div th:each="i : ${#numbers.sequence(0,2)}" class="d-flex flex-column gap-2">
+            <label th:for="${'apartmentPhoto-' + i}" class="form-label">Слайд [[${i + 1}]]</label>
+
+            <img th:id="${'apartmentPhoto-' + i}"
+                 th:src="@{${apartmentsPhotos.size() > i ? apartmentsPhotos[i] : '/img/proxy-image.png'}}"
+                 alt="Слайд"
+                 style="width: 300px; height: 150px; object-fit: contain; border: 1px solid #ccc; border-radius: 4px;"
+                 class="rounded">
+
+            <label style="font-weight: bold; font-size: 12px;">Рекомендований розмір (1920х800)</label>
+
+            <input type="file"
+                   class="preview-input"
+                   th:name="${'apartmentPhoto-' + i}"
+                   th:attr="data-field=${'apartmentPhoto' + i}, data-target=${'apartmentPhoto-' + i}">
+        </div>
+    </div>
+    <div class="d-flex flex-column gap-2 ms-3 me-3 mt-4">
+        <label for="description" class="form-label" style="font-size: 20px; color: #333;">Опис квартир</label>
+        <textarea id="description"
+                  name="description"
+                  rows="6"
+                  class="text-input form-control"
+                  placeholder="Введіть опис новобудови..."
+                  data-field="apartmentDescription"
+                  style="resize: vertical; font-size: 16px;"></textarea>
+    </div>
+    <!-- Інфографіка -->
+    <div class="d-flex flex-column gap-2 ms-3 w-25 mt-5">
+        <label class="form-label" style="font-size: 20px; color: #333;">Інфографіка</label>
+        <div class="input-group">
+            <!-- Схований інпут -->
+            <input type="file" id="fileUpload" name="fileUpload" hidden>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Виберіть файл..."
+                   id="fileName"
+                   readonly
+                   onclick="document.getElementById('fileUpload').click();">
+            <!-- Кнопка з іконкою -->
+            <label for="fileUpload" class="btn btn-outline-primary">
+                <img th:src="@{/img/file-icon.png}" alt="Вибрати файл" style="width:24px; height:24px;">
+            </label>
+            <label for="descriptionInfo" class="visually-hidden">Опис</label>
+            <input type="text"
+                   class="form-control me-3 ms-3"
+                   id="descriptionInfo"
+                   name="description"
+                   placeholder="Опис">
+            <!-- Кнопка + -->
+            <div class="col-auto">
+                <button type="button" class="btn btn-success add-btn">+</button>
+            </div>
+        </div>
+    </div>
 </div>

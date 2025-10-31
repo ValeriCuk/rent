@@ -4,14 +4,19 @@
     <div class="d-flex flex-column gap-2 ms-3">
         <label for="banner" class="form-label" style="font-size: 20px; color: #333;">Головний банер</label>
         <img th:src="@{${banner == null ? '/img/proxy-image.png' : banner}}" alt="Банер"
-             id="bannerImageReal"
+             id="bannerImage"
              style="width: 300px; height: 150px;
                                          object-fit: contain;
                                          border: 1px solid #ccc; border-radius: 4px;
                                          background-color: #f8f9fa;"
              class="rounded">
         <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (1920х800)</label>
-        <input class="form-control" type="file" id="banner" name="banner">
+        <input class="preview-input"
+               type="file"
+               id="banner"
+               name="banner"
+               data-target="bannerImage"
+               data-field="banner">
     </div>
 
     <!-- Правий блок -->
@@ -22,10 +27,11 @@
                 <div class="mb-4 me-4">
                     <label for="name" class="form-label">Назва</label>
                     <input type="text"
-                           class="form-control me-3"
+                           class="text-input form-control me-3"
                            id="name"
                            name="title"
                            th:value="${building.buildingName ?: ''}"
+                           data-field="title"
                            placeholder="Назва"
                            required>
                 </div>
@@ -33,10 +39,11 @@
                 <div class="mb-4 me-4">
                     <label for="number" class="form-label">Порядок сортування</label>
                     <input type="text"
-                           class="form-control me-3"
+                           class="text-input form-control me-3"
                            id="number"
                            name="number"
                            th:value="${building.buildingName ?: ''}"
+                           data-field="sortOrder"
                            placeholder="Порядок сортування"
                            required>
                 </div>
@@ -55,7 +62,7 @@
             <div class="mt-2 me-2">
                 <label for="address" class="form-label">Адреса</label>
                 <input type="text"
-                       class="form-control me-3"
+                       class="text-input form-control me-3"
                        id="address"
                        name="address"
                        th:value="${'обл.' + building.address.region +
@@ -64,33 +71,30 @@
                        ', вул. ' + building.address.street +
                        ', буд. ' + building.address.buildingNumber +
                        (building.address.apartmentNumber != null ? ', кв. ' + building.address.apartmentNumber : '')}"
+                       data-field="address"
                        placeholder="Адреса"
                        required>
             </div>
         </div>
     </div>
 
-
 </div>
     <!-- Інфографіка -->
     <div class="d-flex flex-column gap-2 ms-3 w-25">
         <label class="form-label" style="font-size: 20px; color: #333;">Інфографіка</label>
         <div class="input-group">
+            <!-- Схований інпут -->
+            <input type="file" id="fileUpload" name="fileUpload" hidden>
             <input type="text"
                    class="form-control"
                    placeholder="Виберіть файл..."
                    id="fileName"
                    readonly
                    onclick="document.getElementById('fileUpload').click();">
-
             <!-- Кнопка з іконкою -->
             <label for="fileUpload" class="btn btn-outline-primary">
                 <img th:src="@{/img/file-icon.png}" alt="Вибрати файл" style="width:24px; height:24px;">
             </label>
-
-            <!-- Схований інпут -->
-            <input type="file" id="fileUpload" name="fileUpload" hidden>
-
 
             <label for="description" class="visually-hidden">Опис</label>
             <input type="text"
@@ -98,6 +102,10 @@
                    id="description"
                    name="description"
                    placeholder="Опис">
+            <!-- Кнопка + -->
+            <div class="col-auto">
+                <button type="button" class="btn btn-success add-btn">+</button>
+            </div>
         </div>
     </div>
 </div>

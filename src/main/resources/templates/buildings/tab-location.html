@@ -1,3 +1,42 @@
 <div th:fragment="content">
-    <!-- Контент вкладки "Проєкт" -->
+    <div class="d-flex flex-column gap-4">
+
+        <!-- 🔹 Координати: довгота + широта -->
+        <div class="d-flex gap-4">
+            <div class="flex-grow-1">
+                <label for="longitude" class="form-label">Довгота</label>
+                <input type="text"
+                       id="longitude"
+                       name="longitude"
+                       th:value="${location.longitude == null ? '' : location.longitude}"
+                       class="text-input form-control coordinate-input"
+                       data-field="longitude"
+                       placeholder="Координати">
+            </div>
+
+            <div class="flex-grow-1">
+                <label for="latitude" class="form-label">Широта</label>
+                <input type="text"
+                       id="latitude"
+                       name="latitude"
+                       th:value="${location.latitude == null ? '' : location.latitude}"
+                       data-field="latitude"
+                       class="text-input form-control coordinate-input"
+                       placeholder="Координати">
+            </div>
+        </div>
+
+        <!-- 📝 Опис місцерозташування -->
+        <div>
+            <label for="locationDescription" class="form-label">Опис місцерозташування</label>
+            <textarea id="locationDescription"
+                      name="locationDescription"
+                      th:text="${location.description}"
+                      data-field="locationDescription"
+                      rows="6"
+                      class="text-input form-control"
+                      placeholder="Наприклад: поруч із метро, зручний заїзд, тиха вулиця..."></textarea>
+        </div>
+
+    </div>
 </div>

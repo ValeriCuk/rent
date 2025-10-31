@@ -2,25 +2,25 @@
 <div th:fragment="tabs(activeTab)">
     <ul class="nav nav-tabs custom-tabs">
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'main'} ? ' active'" href="#">Основне</a>
+            <a href="#" class="nav-link active" data-tab="main">Основне</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'project'} ? ' active'" href="#">Про проєкт</a>
+            <a href="#" class="nav-link" data-tab="project">Про проєкт</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'location'} ? ' active'" href="#">Місцеположення</a>
+            <a class="nav-link" data-tab='location' href="#">Місцеположення</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'infra'} ? ' active'" href="#">Інфраструктура</a>
+            <a class="nav-link" data-tab='infra' href="#">Інфраструктура</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'apartments'} ? ' active'" href="#">Квартири</a>
+            <a class="nav-link" data-tab='apartments' href="#">Квартири</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'panorama'} ? ' active'" href="#">Панорама</a>
+            <a class="nav-link" data-tab='panorama' href="#">Панорама</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" th:classappend="${activeTab == 'specification'} ? ' active'" href="#">Специфікація</a>
+            <a class="nav-link" data-tab='specification' href="#">Специфікація</a>
         </li>
     </ul>
 </div>

@@ -1,3 +1,14 @@
 <div th:fragment="content">
-    <!-- Контент вкладки "Проєкт" -->
+    <div class="d-flex flex-column gap-2 ms-3 me-3">
+        <label class="form-label" style="font-size: 20px; color: #333;">Панорама</label>
+        <img th:src="@{${panorama == null ? '/img/proxy-panorama.png' : panorama}}" alt="Panorama"
+             id="panorama"
+             style="width: auto; height: 300px;
+                                         object-fit: contain;
+                                         border: 1px solid #ccc; border-radius: 4px;
+                                         background-color: #f8f9fa;"
+             class="rounded">
+        <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (1920х800)</label>
+        <input class="preview-input w-25" type="file" id="panoramaInput" name="panoramaInput" data-field="panoramaPhoto" data-target="panorama">
+    </div>
 </div>

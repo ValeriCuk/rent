@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,13 @@ public class BuildingService {
                 .map(Photo::getUrl)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<String> getURLsPhoto(BuildingDTO dto, PhotoType type){
+        return dto.getPhotos().stream()
+                .filter(photo -> photo.getType() == type)
+                .map(Photo::getUrl)
+                .collect(Collectors.toList());
     }
 
     //getAll()

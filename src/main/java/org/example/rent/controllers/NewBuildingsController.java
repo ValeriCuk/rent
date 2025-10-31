@@ -9,12 +9,14 @@ import org.example.rent.other.CustomLogger;
 import org.example.rent.other.PhotoType;
 import org.example.rent.services.BuildingService;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/new-buildings")
@@ -58,9 +60,36 @@ public class NewBuildingsController {
         model.addAttribute("contentFragment", "content");
         model.addAttribute("building", buildingDTO);
         model.addAttribute("banner", bannerURL);
-        model.addAttribute("activeTab", "main");
 
         return "layouts/base";
+    }
+
+    @GetMapping("/{id}/tab/{tab}")
+    public String loadTab(@PathVariable Long id, @PathVariable String tab, Model model) {
+        BuildingDTO dto = buildingService.getById(id);
+        String bannerURL = buildingService.getURLPhoto(dto, PhotoType.BANNER);
+        List<String> projectPhotos = buildingService.getURLsPhoto(dto, PhotoType.B_PROJECT);
+        List<String> infraPhotos = buildingService.getURLsPhoto(dto, PhotoType.B_INFRASTRUCTURE);
+        List<String> apartmentsPhotos = buildingService.getURLsPhoto(dto, PhotoType.B_APARTMENTS);
+        String panoramaURL = buildingService.getURLPhoto(dto, PhotoType.PANORAMA);
+
+        model.addAttribute("building", dto);
+        model.addAttribute("banner", bannerURL);
+        model.addAttribute("projectPhotos", projectPhotos);
+        model.addAttribute("location", dto.getLocation());
+        model.addAttribute("infraPhotos", infraPhotos);
+        model.addAttribute("apartmentsPhotos", apartmentsPhotos);
+        model.addAttribute("panorama", panoramaURL);
+
+        return switch (tab) {
+            case "project" -> "buildings/tab-project :: content";
+            case "location" -> "buildings/tab-location :: content";
+            case "infra" -> "buildings/tab-infra :: content";
+            case "apartments" -> "buildings/tab-apartments :: content";
+            case "panorama" -> "buildings/tab-panorama :: content";
+            case "specification" -> "buildings/tab-specification :: content";
+            default -> "buildings/tab-main :: content";
+        };
     }
 
 //    @PostMapping

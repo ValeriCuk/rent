@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="/adminlte/dist/css/adminlte.css">
+<th:block th:replace="fragments/scripts :: summernote-scripts"/>
+
 <div th:fragment="content">
     <div class="d-flex justify-content-between align-items-center ms-5 me-5 mt-4 mb-2">
         <h1 class="fs-4 mb-0">Редагування новобудови</h1>
@@ -16,16 +18,49 @@
         <div class="card-header">
             <div th:replace="~{buildings/tabs :: tabs('main')}"></div>
         </div>
-        <div class="card-body">
-            <div th:switch="${activeTab}">
-                <div th:case="'main'" th:replace="~{buildings/tab-main :: content}"></div>
-                <div th:case="'project'" th:replace="~{buildings/tab-project :: content}"></div>
-                <div th:case="'location'" th:replace="~{buildings/tab-location :: content}"></div>
-                <div th:case="'infra'" th:replace="~{buildings/tab-infra :: content}"></div>
-                <div th:case="'apartments'" th:replace="~{buildings/tab-apartments :: content}"></div>
-                <div th:case="'panorama'" th:replace="~{buildings/tab-panorama :: content}"></div>
-                <div th:case="'specification'" th:replace="~{buildings/tab-specification :: content}"></div>
+        <form id="buildingForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" id="buildingId" th:value="${building.id}">
+            <input type="hidden" id="projectsPhotos" th:value="${projectsPhotos}">
+            <div class="card-body" id="tabContent">
+                <div th:replace="~{buildings/tab-main :: content}"></div>
             </div>
-        </div>
+            <!-- Кнопки -->
+            <div class="d-flex justify-content-end gap-2 me-3 mb-3">
+                <a th:href="@{/new-buildings}" class="btn btn-secondary">Скасувати</a>
+                <button type="submit" class="btn btn-primary">Зберегти</button>
+            </div>
+        </form>
     </div>
+    <script src="/js/temp-building.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabLinks = document.querySelectorAll(".nav-link");
+            const tabContent = document.getElementById("tabContent");
+            const buildingId = document.getElementById("buildingId").value;
+            initializeTempBuildingFromDOM();
+            storeTemporaryData();
+
+            tabLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+
+                    // зняти active з усіх
+                    tabLinks.forEach(l => l.classList.remove("active"));
+                    this.classList.add("active");
+
+                    const tab = this.dataset.tab;
+
+                    // AJAX-запит на сервер
+                    fetch(`/new-buildings/${buildingId}/tab/${tab}`)
+                        .then(resp => resp.text())
+                        .then(html => {
+                            tabContent.innerHTML = html;
+                            storeTemporaryData();
+                        });
+                });
+            });
+        });
+    </script>
+
 </div>

@@ -24,55 +24,34 @@
                         <!-- Банер -->
                         <div class="d-flex flex-column gap-2">
                             <label for="banner" class="form-label" style="font-size: 20px; color: #333;">Банер</label>
-                            <div  th:switch="${service.bannerPhotoDTO}">
-                                <div th:case="null">
-                                    <img th:src="@{'/img/proxy-image.png'}" alt="Банер"
-                                         id="bannerImageDefault"
-                                         style="width: 300px; height: 150px;
+                            <div>
+                                <img th:src="@{${service.bannerPhotoDTO == null ? '/img/proxy-image.png' : service.bannerPhotoDTO.url}}" alt="Превʼю"
+                                     id="bannerImage"
+                                     style="width: 300px; height: 150px;
                                          object-fit: contain;
                                          border: 1px solid #ccc; border-radius: 4px;
                                          background-color: #f8f9fa;"
-                                         class="rounded">
-                                </div>
-                                <div th:case="*">
-                                    <img th:src="@{${service.bannerPhotoDTO.url}}" alt="Банер"
-                                         id="bannerImageReal"
-                                         style="width: 300px; height: 150px;
-                                         object-fit: contain;
-                                         border: 1px solid #ccc; border-radius: 4px;
-                                         background-color: #f8f9fa;"
-                                         class="rounded">
-                                </div>
+                                     class="rounded">
                             </div>
+
                             <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (1920х800)</label>
-                            <input class="form-control" type="file" id="banner" name="banner">
+                            <input class="preview-input" type="file" id="banner" name="banner" data-target="bannerImage">
                         </div>
 
                         <!-- Прев’ю -->
                         <div class="d-flex flex-column gap-2">
                             <label for="preview" class="form-label" style="font-size: 20px; color: #333;">Превʼю</label>
-                            <div  th:switch="${service.previewPhotoDTO}">
-                                <div th:case="null">
-                                    <img th:src="@{'/img/proxy-image.png'}" alt="Превʼю"
-                                         id="previewImageDefault"
-                                         style="width: 300px; height: 150px;
+                            <div>
+                                <img th:src="@{${service.previewPhotoDTO == null ? '/img/proxy-image.png' : service.previewPhotoDTO.url}}" alt="Превʼю"
+                                     id="previewImage"
+                                     style="width: 300px; height: 150px;
                                          object-fit: contain;
                                          border: 1px solid #ccc; border-radius: 4px;
                                          background-color: #f8f9fa;"
-                                         class="rounded">
-                                </div>
-                                <div th:case="*">
-                                    <img th:src="@{${service.previewPhotoDTO.url}}" alt="Превʼю"
-                                         id="previewImageReal"
-                                         style="width: 300px; height: 150px;
-                                         object-fit: contain;
-                                         border: 1px solid #ccc; border-radius: 4px;
-                                         background-color: #f8f9fa;"
-                                         class="rounded">
-                                </div>
+                                     class="rounded">
                             </div>
                             <label style="font-weight: bold; font-size: 12px; color: #333;">Рекомендований розмір (500×350)</label>
-                            <input class="form-control" type="file" id="preview" name="preview">
+                            <input class="preview-input" type="file" id="preview" name="preview" data-target="previewImage">
                         </div>
                     </div>
                     <!-- Назва -->
@@ -122,4 +101,5 @@
             </div>
         </div>
     </div>
+<!--    <script th:src="@{/js/preview-input.js}"></script>-->
 </div>
